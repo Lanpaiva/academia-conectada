@@ -23,7 +23,7 @@
 | 1 | Alan Araujo Paiva |
 | 2 | Ian Ávila Guerra |
 | 3 | Júlio de Moura Stelzer |
-| 4 |  |
+| 4 | Matheus Araujo dos Santos Nunes |
 
 
 ---
