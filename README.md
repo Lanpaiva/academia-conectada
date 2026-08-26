@@ -1,408 +1,450 @@
-Academia Conectada
+# Academia Conectada
 
-Sistema web de gerenciamento de academia desenvolvido como projeto acadêmico do curso de Análise e Desenvolvimento de Sistemas da Universidade Presbiteriana Mackenzie.
+### Sistema web de gerenciamento de academia
 
-O sistema será publicado gratuitamente na Vercel. O código-fonte e o acompanhamento das atividades permanecerão públicos no GitHub.
+> Projeto acadêmico do curso de Análise e Desenvolvimento de Sistemas da Universidade Presbiteriana Mackenzie.
 
-Links do projeto
+---
 
-Repositório: github.com/Lanpaiva/academia-conectada
+## Links do projeto
 
-Quadro de acompanhamento: GitHub Projects - Academia Conectada
+| Item | Endereço |
+| --- | --- |
+| Repositório | [github.com/Lanpaiva/academia-conectada](https://github.com/Lanpaiva/academia-conectada) |
+| Quadro de acompanhamento | [GitHub Projects - Academia Conectada](https://github.com/users/Lanpaiva/projects/2) |
+| Aplicação publicada | Será adicionada após a publicação na Vercel |
 
-Aplicação publicada: será adicionada após a primeira publicação na Vercel
+---
 
-Integrantes
+## Integrantes
 
-Nome
+| Nº | Nome |
+|:---:|---|
+| 1 | Alan Araujo Paiva |
+| 2 | Gabriel Vieira Ferreira |
+| 3 | Pedro Emmanuel Esteves |
+| 4 | Rafaela Rarume Alves Perpetuo |
+| 5 | Renan Urtado Challó de Oliveira Jordão |
 
-Alan Araujo Paiva
+---
 
-Gabriel Vieira Ferreira
+## Sobre o projeto
 
-Pedro Emmanuel Esteves
+O **Academia Conectada** será uma aplicação web para centralizar as principais atividades de alunos, instrutores e administradores de uma academia.
 
-Rafaela Rarume Alves Perpetuo
+O sistema permitirá controlar matrículas, planos, aulas, reservas, treinos, exercícios e a evolução dos alunos.
 
-Renan Urtado Challó de Oliveira Jordão
+---
 
-O que será desenvolvido
+## Funcionalidades planejadas
 
-O Academia Conectada reunirá em uma única aplicação as principais atividades de alunos, instrutores e administradores de uma academia.
+- Cadastro e autenticação de usuários;
+- Controle de acesso por perfil;
+- Perfis de aluno, instrutor e administrador;
+- Apresentação de modalidades, planos e horários;
+- Matrícula de alunos;
+- Agenda de aulas;
+- Reserva e cancelamento de aulas;
+- Controle da capacidade das turmas;
+- Cadastro de exercícios;
+- Criação e atribuição de planos de treino;
+- Registro de séries, repetições e cargas;
+- Registro de medidas;
+- Histórico e gráficos de evolução;
+- Administração de alunos, planos, aulas e instrutores;
+- Interface responsiva para computadores e celulares;
+- Recursos de acessibilidade.
 
-Funcionalidades planejadas:
+---
 
-cadastro, autenticação e controle de acesso por perfil;
+## Estado atual
 
-apresentação pública da academia, modalidades, planos e horários;
+O projeto está na etapa inicial de planejamento e preparação do ambiente.
 
-matrícula de alunos;
+O repositório e o quadro de acompanhamento já foram criados. A implementação será realizada gradualmente e acompanhada pelo GitHub Projects.
 
-agenda, reserva e cancelamento de aulas;
+---
 
-controle da capacidade das turmas;
+## Stack tecnológica
 
-cadastro de exercícios e planos de treino;
+| Categoria | Tecnologia |
+| --- | --- |
+| Linguagem | TypeScript |
+| Framework | Next.js com App Router |
+| Interface | React |
+| Estilização | Tailwind CSS |
+| Backend | Route Handlers e Server Actions |
+| Banco de dados | PostgreSQL |
+| Hospedagem do banco | Neon Free |
+| ORM | Prisma |
+| Autenticação | Better Auth |
+| Formulários | React Hook Form |
+| Validação | Zod |
+| Gráficos | Recharts |
+| Datas e horários | date-fns |
+| Ícones | Lucide React |
+| Testes unitários | Vitest e Testing Library |
+| Testes no navegador | Playwright |
+| Versionamento | Git e GitHub |
+| Publicação | Vercel Hobby |
 
-atribuição de treinos pelos instrutores;
+---
 
-registro de séries, repetições, cargas e medidas;
-
-histórico e gráficos de evolução do aluno;
-
-administração de alunos, planos, aulas e instrutores;
-
-interface responsiva e acessível para computadores e celulares.
-
-Estado atual
-
-O projeto está na etapa inicial de planejamento e preparação do ambiente. O repositório e o quadro de acompanhamento já foram criados. A implementação do sistema será realizada gradualmente e registrada no GitHub Projects.
-
-Stack tecnológica
-
-Item
-
-Tecnologia
-
-Linguagem
-
-TypeScript
-
-Framework full stack
-
-Next.js com App Router
-
-Interface
-
-React
-
-Estilização
-
-Tailwind CSS
-
-Backend
-
-Route Handlers e Server Actions do Next.js
-
-Banco de dados
-
-PostgreSQL
-
-Banco em produção
-
-Neon Free
-
-ORM
-
-Prisma
-
-Autenticação
-
-Better Auth
-
-Formulários
-
-React Hook Form
-
-Validação
-
-Zod
-
-Gráficos
-
-Recharts
-
-Datas e horários
-
-date-fns
-
-Ícones
-
-Lucide React
-
-Testes unitários
-
-Vitest e Testing Library
-
-Testes de ponta a ponta
-
-Playwright
-
-Versionamento
-
-Git e GitHub
-
-Publicação
-
-Vercel Hobby
-
-Pré-requisitos
+## Pré-requisitos
 
 Antes de baixar o projeto, instale:
 
-Git;
+| Programa | Requisito |
+| --- | --- |
+| Git | Versão atual |
+| Node.js | Versão 24 ou superior |
+| npm | Instalado junto com o Node.js |
+| Editor | Visual Studio Code recomendado |
 
-Node.js versão 24 ou superior;
+Para verificar as instalações:
 
-npm, instalado automaticamente junto com o Node.js;
-
-um editor de código, preferencialmente Visual Studio Code.
-
-Para verificar o ambiente:
-
+```bash
 git --version
 node --version
 npm --version
+```
 
-Preparação no macOS
+---
 
-Opção 1 - instaladores oficiais
+## Instalação no macOS
 
-Instale o Git pela página git-scm.com/downloads/mac.
+### Instalar com Homebrew
 
-Instale a versão LTS do Node.js pela página nodejs.org/en/download.
-
-Feche e abra novamente o Terminal.
-
-Execute os comandos de verificação apresentados na seção anterior.
-
-Opção 2 - Homebrew
-
-Com o Homebrew instalado, execute:
-
+```bash
 brew update
 brew install git
 brew install node
+```
 
-Depois, confirme a instalação:
+Verifique as instalações:
 
+```bash
 git --version
 node --version
 npm --version
+```
 
-Baixe o projeto e instale todas as bibliotecas no macOS:
+Clone o repositório:
 
+```bash
 git clone https://github.com/Lanpaiva/academia-conectada.git
 cd academia-conectada
+```
+
+Instale as bibliotecas:
+
+```bash
 npm install
 npx playwright install
+```
+
+Execute o projeto:
+
+```bash
 npm run dev
+```
 
-Preparação no Windows
+Acesse:
 
-Opção 1 - instaladores oficiais
+```text
+http://localhost:3000
+```
 
-Instale o Git pela página git-scm.com/download/win.
+---
 
-Instale a versão LTS do Node.js pela página nodejs.org/en/download.
+## Instalação no Windows
 
-Feche e abra novamente o PowerShell ou Windows Terminal.
+Abra o **PowerShell** ou o **Windows Terminal**.
 
-Execute os comandos de verificação apresentados anteriormente.
+### Instalar com WinGet
 
-Opção 2 - WinGet
-
-Abra o PowerShell ou Windows Terminal e execute:
-
+```powershell
 winget install --id Git.Git --exact
 winget install --id OpenJS.NodeJS.LTS --exact
+```
 
-Feche e abra novamente o terminal. Depois, confirme a instalação:
+Feche e abra novamente o terminal.
 
+Verifique as instalações:
+
+```powershell
 git --version
 node --version
 npm --version
+```
 
-Baixe o projeto e instale todas as bibliotecas no Windows:
+Clone o repositório:
 
+```powershell
 git clone https://github.com/Lanpaiva/academia-conectada.git
 Set-Location academia-conectada
+```
+
+Instale as bibliotecas:
+
+```powershell
 npm install
 npx playwright install
+```
+
+Execute o projeto:
+
+```powershell
 npm run dev
+```
 
-Como baixar o projeto
+Acesse:
 
-Os comandos abaixo são iguais no Terminal do macOS, PowerShell, Windows Terminal e Git Bash:
+```text
+http://localhost:3000
+```
 
-git clone https://github.com/Lanpaiva/academia-conectada.git
-cd academia-conectada
+---
 
-Como instalar as bibliotecas
+## Comandos para adicionar as bibliotecas
 
-Instalação normal para todos os integrantes
+Os comandos desta seção serão executados durante a configuração inicial do projeto.
 
-Depois que o código inicial e o arquivo package.json estiverem disponíveis no repositório, cada integrante deverá executar dentro da pasta do projeto:
+Depois que as dependências estiverem registradas no `package.json`, os outros integrantes precisarão executar somente:
 
+```bash
 npm install
-npx playwright install
+```
 
-O comando npm install baixará as versões registradas no projeto, incluindo Next.js, React, Tailwind CSS, Prisma, Better Auth, React Hook Form, Zod, Recharts, date-fns, Lucide React e as bibliotecas de testes. O segundo comando instalará os navegadores usados pelo Playwright.
+### Next.js, React e TypeScript
 
-Não é necessário instalar cada biblioteca manualmente em cada computador.
-
-Comandos completos usados para adicionar as bibliotecas ao projeto
-
-Os comandos abaixo serão executados uma única vez durante a criação da aplicação para registrar todas as dependências no package.json.
-
-Framework, interface e estilização:
-
+```bash
 npm install next@latest react@latest react-dom@latest
-npm install -D typescript @types/node @types/react @types/react-dom
+
+npm install -D typescript
+npm install -D @types/node @types/react @types/react-dom
+```
+
+### Tailwind CSS
+
+```bash
 npm install -D tailwindcss @tailwindcss/postcss
+```
 
-Banco de dados e ORM:
+### PostgreSQL e Prisma
 
+```bash
 npm install @prisma/client @prisma/adapter-pg pg
+
 npm install -D prisma @types/pg
+```
 
-Autenticação, formulários e validação:
+Inicializar o Prisma com PostgreSQL:
 
+```bash
+npx prisma init --datasource-provider postgresql
+```
+
+### Autenticação
+
+```bash
 npm install better-auth
+```
+
+### Formulários e validação
+
+```bash
 npm install react-hook-form @hookform/resolvers zod
+```
 
-Gráficos, datas e ícones:
+### Gráficos, datas e ícones
 
+```bash
 npm install recharts date-fns lucide-react
+```
 
-Padronização do código:
+### Padronização do código
 
-npm install -D eslint eslint-config-next prettier prettier-plugin-tailwindcss
+```bash
+npm install -D eslint eslint-config-next
+npm install -D prettier prettier-plugin-tailwindcss
+```
 
-Testes unitários e de componentes:
+### Testes unitários e de componentes
 
+```bash
 npm install -D vitest @vitejs/plugin-react jsdom
-npm install -D @testing-library/react @testing-library/jest-dom @testing-library/user-event
 
-Testes completos no navegador:
+npm install -D @testing-library/react
+npm install -D @testing-library/jest-dom
+npm install -D @testing-library/user-event
+```
 
+### Testes no navegador
+
+```bash
 npm install -D @playwright/test
 npx playwright install
+```
 
-Inicialização do Prisma com PostgreSQL:
+---
 
-npx prisma init --datasource-provider postgresql
+## Variáveis de ambiente
 
-Configuração das variáveis de ambiente
+As credenciais e conexões não serão enviadas ao GitHub.
 
-As credenciais e conexões não serão salvas no GitHub. Quando o arquivo .env.example for incluído no projeto, crie uma cópia local.
+Quando o arquivo `.env.example` estiver disponível, crie uma cópia local.
 
-No macOS ou Git Bash:
+### macOS ou Git Bash
 
+```bash
 cp .env.example .env
+```
 
-No PowerShell:
+### Windows PowerShell
 
+```powershell
 Copy-Item .env.example .env
+```
 
-As principais variáveis serão:
+O arquivo deverá conter:
 
+```dotenv
 DATABASE_URL="endereco-do-banco-postgresql"
-BETTER_AUTH_SECRET="segredo-local-com-pelo-menos-32-caracteres"
+BETTER_AUTH_SECRET="segredo-com-pelo-menos-32-caracteres"
 BETTER_AUTH_URL="http://localhost:3000"
+```
 
-O arquivo .env é individual e não deve ser enviado ao repositório.
+> Nunca envie o arquivo `.env` ao GitHub.
 
-Banco de dados
+---
 
-Após configurar a variável DATABASE_URL, os comandos do Prisma serão:
+## Banco de dados
 
+Gerar o Prisma Client:
+
+```bash
 npx prisma generate
+```
+
+Criar ou atualizar as tabelas:
+
+```bash
 npx prisma migrate dev
+```
 
-Para abrir a interface de consulta do banco durante o desenvolvimento:
+Abrir a interface visual do banco:
 
+```bash
 npx prisma studio
+```
 
-Como executar localmente
+---
 
-Depois da instalação das dependências e da configuração do .env, execute:
+## Execução do projeto
 
+Iniciar o ambiente de desenvolvimento:
+
+```bash
 npm run dev
+```
 
 A aplicação ficará disponível em:
 
+```text
 http://localhost:3000
+```
 
-Para interromper o servidor, pressione Ctrl + C no terminal.
+Para interromper o servidor:
 
-Testes e qualidade
+```text
+Ctrl + C
+```
 
-Os scripts serão adicionados ao package.json durante a implementação. Os comandos planejados são:
+---
 
+## Testes e qualidade
+
+| Comando | Finalidade |
+| --- | --- |
+| `npm run lint` | Verificar problemas e padronização do código |
+| `npm run test` | Executar testes unitários e de componentes |
+| `npm run test:e2e` | Executar testes completos no navegador |
+| `npm run build` | Validar a geração da aplicação para produção |
+
+Executar todas as verificações:
+
+```bash
 npm run lint
 npm run test
 npm run test:e2e
 npm run build
+```
 
-Comando
+---
 
-Finalidade
+## Fluxo de contribuição
 
-npm run lint
+1. Escolha uma atividade no [quadro do projeto](https://github.com/users/Lanpaiva/projects/2);
+2. Mova a atividade para **In Progress**;
+3. Atualize a branch principal;
+4. Crie uma branch para a funcionalidade;
+5. Implemente e teste a alteração;
+6. Faça o commit;
+7. Envie a branch ao GitHub;
+8. Abra um Pull Request;
+9. Após a aprovação, mova a atividade para **Done**.
 
-Verificar a padronização e possíveis problemas no código
+### Criar uma branch
 
-npm run test
-
-Executar os testes unitários e de componentes
-
-npm run test:e2e
-
-Executar os testes completos no navegador
-
-npm run build
-
-Validar a geração da aplicação para produção
-
-Fluxo de contribuição
-
-Antes de começar uma atividade:
-
-selecione ou crie a tarefa correspondente no quadro do projeto;
-
-mova a tarefa para In Progress;
-
-atualize a branch principal;
-
-crie uma branch específica para a atividade;
-
-implemente e teste a alteração;
-
-envie um Pull Request para revisão;
-
-após a aprovação, mova a tarefa para Done.
-
-Exemplo de criação de branch:
-
+```bash
 git switch main
 git pull origin main
 git switch -c feature/nome-da-funcionalidade
+```
 
-Exemplo de envio da alteração:
+### Enviar uma alteração
 
+```bash
 git add .
 git commit -m "feat: descreve a funcionalidade implementada"
 git push -u origin feature/nome-da-funcionalidade
+```
 
-Publicação
+---
 
-A aplicação será publicada no plano gratuito da Vercel e utilizará PostgreSQL no plano gratuito do Neon. Não serão contratados serviços pagos de AWS, IBM Cloud ou Google Cloud.
+## Publicação
 
-A URL pública será adicionada a este README após a primeira publicação.
+A aplicação será publicada utilizando:
 
-Próximos passos
+| Serviço | Plano |
+| --- | --- |
+| GitHub | Gratuito |
+| Vercel | Hobby gratuito |
+| Neon PostgreSQL | Free |
 
-Inicializar a aplicação Next.js no repositório.
+Não serão contratados serviços pagos da AWS, IBM Cloud ou Google Cloud.
 
-Configurar as dependências e os scripts do projeto.
+A URL pública será adicionada após a primeira publicação na Vercel.
 
-Criar o banco PostgreSQL e o modelo inicial do Prisma.
+---
 
-Implementar autenticação e controle por perfil.
+## Próximos passos
 
-Desenvolver as funcionalidades conforme o quadro do GitHub Projects.
+1. Inicializar a aplicação Next.js;
+2. Configurar as bibliotecas;
+3. Criar o banco PostgreSQL;
+4. Criar o modelo inicial do Prisma;
+5. Implementar autenticação;
+6. Criar o controle de acesso por perfil;
+7. Desenvolver as funcionalidades;
+8. Criar os testes automatizados;
+9. Publicar a primeira versão na Vercel.
 
-Criar os testes automatizados.
+---
 
-Publicar a primeira versão na Vercel.
+### Universidade Presbiteriana Mackenzie
+
+**Curso:** Análise e Desenvolvimento de Sistemas  
+**Projeto:** Academia Conectada  
+**Finalidade:** Projeto acadêmico
