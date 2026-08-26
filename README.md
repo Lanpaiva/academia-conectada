@@ -21,10 +21,10 @@
 | Nº | Nome |
 |:---:|---|
 | 1 | Alan Araujo Paiva |
-| 2 | Gabriel Vieira Ferreira |
-| 3 | Pedro Emmanuel Esteves |
-| 4 | Rafaela Rarume Alves Perpetuo |
-| 5 | Renan Urtado Challó de Oliveira Jordão |
+| 2 | Ian Ávila Guerra |
+| 3 | Júlio de Moura Stelzer |
+| 4 |  |
+
 
 ---
 
