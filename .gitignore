@@ -1,0 +1,14 @@
+.next
+node_modules
+out
+dist
+coverage
+.env
+.env*.local
+.vercel
+tsconfig.tsbuildinfo
+*.log
+__pycache__/
+*.pyc
+docs/entrega-2/render*
+tmp

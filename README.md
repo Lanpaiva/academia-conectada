@@ -12,7 +12,7 @@
 | --- | --- |
 | Repositório | [github.com/Lanpaiva/academia-conectada](https://github.com/Lanpaiva/academia-conectada) |
 | Quadro de acompanhamento | [GitHub Projects - Academia Conectada](https://github.com/users/Lanpaiva/projects/2) |
-| Aplicação publicada | Será adicionada após a publicação na Vercel |
+| Aplicação publicada | [academia-conectada.vercel.app](https://academia-conectada.vercel.app) |
 
 ---
 
@@ -59,9 +59,9 @@ O sistema permitirá controlar matrículas, planos, aulas, reservas, treinos, ex
 
 ## Estado atual
 
-O projeto está na etapa inicial de planejamento e preparação do ambiente.
+O projeto possui uma primeira interface web executável publicada na Vercel.
 
-O repositório e o quadro de acompanhamento já foram criados. A implementação será realizada gradualmente e acompanhada pelo GitHub Projects.
+A versão atual apresenta uma experiência demonstrativa para visitantes, alunos, instrutores e administradores, com fluxos de matrícula, reserva de aulas, consulta e registro de treino, acompanhamento de evolução e manutenção administrativa.
 
 ---
 
@@ -425,21 +425,19 @@ A aplicação será publicada utilizando:
 
 Não serão contratados serviços pagos da AWS, IBM Cloud ou Google Cloud.
 
-A URL pública será adicionada após a primeira publicação na Vercel.
+A aplicação está publicada em [academia-conectada.vercel.app](https://academia-conectada.vercel.app).
 
 ---
 
 ## Próximos passos
 
-1. Inicializar a aplicação Next.js;
-2. Configurar as bibliotecas;
-3. Criar o banco PostgreSQL;
-4. Criar o modelo inicial do Prisma;
-5. Implementar autenticação;
-6. Criar o controle de acesso por perfil;
-7. Desenvolver as funcionalidades;
-8. Criar os testes automatizados;
-9. Publicar a primeira versão na Vercel.
+1. Criar o modelo inicial do Prisma;
+2. Conectar a aplicação ao PostgreSQL no Neon;
+3. Implementar autenticação com Better Auth;
+4. Persistir matrículas, reservas, treinos e registros de evolução;
+5. Criar testes automatizados para os fluxos principais;
+6. Evoluir os perfis com permissões reais por papel;
+7. Refinar a administração de planos, modalidades e aulas.
 
 ---
 
