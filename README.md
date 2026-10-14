@@ -13,6 +13,8 @@
 | Repositório | [github.com/Lanpaiva/academia-conectada](https://github.com/Lanpaiva/academia-conectada) |
 | Quadro de acompanhamento | [GitHub Projects - Academia Conectada](https://github.com/users/Lanpaiva/projects/2) |
 | Aplicação publicada | [academia-conectada.vercel.app](https://academia-conectada.vercel.app) |
+| Documentação completa em ABNT | [PDF](docs/entrega-2/academia-conectada-entrega-2.pdf) · [DOCX](docs/entrega-2/academia-conectada-entrega-2.docx) |
+| Atividades A4 — planos de teste | [Cenários e procedimentos](tests/manual/README.md) · [Registro de execução](tests/manual/registro-execucao.md) |
 
 ---
 
@@ -365,21 +367,27 @@ Ctrl + C
 
 ## Testes e qualidade
 
+As atividades A4 Praticando e A4 Aplicando o conhecimento estão incorporadas às seções 12 e 13 da [documentação completa](docs/entrega-2/README.md). São 59 cenários funcionais para os oito casos de uso e oito verificações transversais, disponíveis também em [Markdown](tests/manual/README.md) e [JSON](tests/manual/cenarios-de-teste.json).
+
+Os cenários estão planejados e marcados como **Não executado**. Sua execução integrada depende dos serviços de autenticação e persistência previstos no projeto. O catálogo é um plano de testes, sem resultados de homologação ou automação implementada.
+
+Comandos disponíveis na versão atual:
+
 | Comando | Finalidade |
 | --- | --- |
 | `npm run lint` | Verificar problemas e padronização do código |
-| `npm run test` | Executar testes unitários e de componentes |
-| `npm run test:e2e` | Executar testes completos no navegador |
+| `npm run typecheck` | Verificar os tipos TypeScript |
 | `npm run build` | Validar a geração da aplicação para produção |
 
-Executar todas as verificações:
+Executar as verificações disponíveis:
 
 ```bash
 npm run lint
-npm run test
-npm run test:e2e
+npm run typecheck
 npm run build
 ```
+
+Os comandos `npm run test` e `npm run test:e2e` serão adicionados quando as suítes automatizadas forem implementadas.
 
 ---
 
