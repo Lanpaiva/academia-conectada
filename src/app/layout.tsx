@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Academia Conectada",
   description:
-    "Sistema web para gestao de alunos, planos, treinos e aulas de uma academia."
+    "Sistema web para gestão de alunos, planos, treinos e aulas de uma academia."
 };
 
 export default function RootLayout({
