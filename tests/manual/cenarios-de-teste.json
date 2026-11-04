@@ -1,0 +1,927 @@
+{
+  "casos_de_uso": [
+    {
+      "id": "UC01",
+      "title": "Cadastrar-se e entrar",
+      "actor": "Visitante, aluno, instrutor e administrador",
+      "objective": "Validar cadastro, autenticação, saída e recuperação de acesso, conforme o perfil e as regras configuradas (OF01).",
+      "base": "Ambiente de homologação com autenticação e recuperação implementadas; dados fictícios reinicializados. AL01 e AL02 são alunos ativos, IN01 é instrutor e AD01 é administrador. Credenciais de teste e regra de senha configurada estão disponíveis ao executor.",
+      "tests": [
+        {
+          "id": "CT01-01",
+          "title": "Cadastrar usuário com dados válidos",
+          "priority": "Alta",
+          "pre": "Nenhuma conta utiliza novo.aluno@example.test; cadastro público habilitado.",
+          "data": "Nome: Aluno de Teste; e-mail: novo.aluno@example.test; demais campos obrigatórios válidos; senha conforme a regra configurada.",
+          "steps": [
+            "Abrir o cadastro e preencher os dados indicados.",
+            "Enviar o formulário e concluir o fluxo apresentado.",
+            "Consultar a conta criada e o destino do acesso."
+          ],
+          "expected": "Uma única conta é criada com os dados informados. O sistema confirma o cadastro e direciona o usuário à área correspondente ao perfil definido para o cadastro."
+        },
+        {
+          "id": "CT01-02",
+          "title": "Validar obrigatoriedade e regra de senha",
+          "priority": "Alta",
+          "pre": "Cadastro disponível; obrigatoriedade dos campos e regra de senha registradas no ambiente.",
+          "data": "Conjunto A: nome vazio. Conjunto B: e-mail vazio. Conjunto C: novo.aluno@example.test e senha que viola uma condição documentada da regra configurada. Conjunto D: e-mail aluno-sem-arroba.",
+          "steps": [
+            "Preencher o cadastro com cada conjunto, mantendo válidos os demais campos.",
+            "Enviar o formulário e observar a validação.",
+            "Verificar se houve criação de conta."
+          ],
+          "expected": "Cada entrada inválida é rejeitada com indicação clara do campo a corrigir. Nenhuma conta é criada para os conjuntos inválidos."
+        },
+        {
+          "id": "CT01-03",
+          "title": "Impedir cadastro com e-mail existente",
+          "priority": "Alta",
+          "pre": "AL01 possui uma conta cadastrada com al01@example.test.",
+          "data": "Nome: Segundo Aluno; e-mail: al01@example.test; demais dados e senha válidos.",
+          "steps": [
+            "Abrir o cadastro e informar os dados indicados.",
+            "Enviar o formulário e observar a mensagem de validação.",
+            "Consultar a quantidade de contas vinculadas ao e-mail."
+          ],
+          "expected": "O cadastro é recusado por duplicidade de e-mail, com mensagem compreensível. A conta de AL01 permanece inalterada e existe apenas uma conta vinculada ao endereço."
+        },
+        {
+          "id": "CT01-04",
+          "title": "Entrar com credenciais válidas por perfil",
+          "priority": "Alta",
+          "pre": "AL01, IN01 e AD01 possuem contas habilitadas; iniciar cada tentativa sem sessão ativa.",
+          "data": "al01@example.test, in01@example.test e ad01@example.test, cada um com sua senha válida de homologação.",
+          "steps": [
+            "Informar as credenciais de uma das contas e acionar Entrar.",
+            "Verificar a sessão e a área apresentada.",
+            "Encerrar a sessão e repetir para as demais contas."
+          ],
+          "expected": "Cada login cria uma sessão para a conta correta. AL01 acessa a área de aluno, IN01 a de instrutor e AD01 a administrativa, conforme seus respectivos perfis."
+        },
+        {
+          "id": "CT01-05",
+          "title": "Recusar credenciais inválidas",
+          "priority": "Alta",
+          "pre": "AL01 está habilitado; não existe conta com inexistente@example.test; navegador sem sessão ativa.",
+          "data": "Conjunto A: al01@example.test com senha incorreta. Conjunto B: inexistente@example.test com uma senha de teste.",
+          "steps": [
+            "Tentar entrar com cada conjunto de credenciais.",
+            "Observar a resposta e tentar abrir diretamente uma área protegida, usando seu endereço previamente conhecido."
+          ],
+          "expected": "As duas tentativas são recusadas com mensagem clara. Nenhuma sessão autenticada é criada e a área protegida permanece inacessível."
+        },
+        {
+          "id": "CT01-06",
+          "title": "Recusar acesso de conta desabilitada",
+          "priority": "Alta",
+          "pre": "Preparar conta fictícia desabilitada, distinta de AL03: matrícula inativa e conta desabilitada são estados diferentes.",
+          "data": "E-mail: desabilitado@example.test; senha correta da conta desabilitada.",
+          "steps": [
+            "Abrir a tela de entrada e informar as credenciais.",
+            "Acionar Entrar e tentar acessar diretamente uma área protegida pelo endereço conhecido."
+          ],
+          "expected": "A conta desabilitada não obtém sessão nem acesso protegido, mesmo com senha correta. O sistema apresenta uma mensagem compreensível sobre a impossibilidade de acesso."
+        },
+        {
+          "id": "CT01-07",
+          "title": "Encerrar sessão pela saída",
+          "priority": "Alta",
+          "pre": "AL01 está autenticado e visualiza sua área protegida, com os dados da própria conta corretamente apresentados.",
+          "data": "Conta AL01: al01@example.test; endereço de uma página protegida previamente acessada.",
+          "steps": [
+            "Acionar a opção de saída do sistema e observar a confirmação apresentada.",
+            "Tentar reabrir diretamente a página protegida e atualizar a página."
+          ],
+          "expected": "A sessão é encerrada. O acesso protegido exige nova autenticação, sem apresentar dados privados de AL01 após a atualização."
+        },
+        {
+          "id": "CT01-08",
+          "title": "Recuperar o acesso à conta",
+          "priority": "Alta",
+          "pre": "AL01 está habilitado e sem sessão; mecanismo de recuperação configurado para um canal de homologação acessível ao executor.",
+          "data": "Conta AL01: al01@example.test; novos dados de acesso compatíveis com a regra configurada, quando solicitados.",
+          "steps": [
+            "Solicitar recuperação de acesso para al01@example.test.",
+            "Cumprir as etapas e validações do mecanismo configurado no ambiente.",
+            "Entrar com o acesso restabelecido."
+          ],
+          "expected": "O sistema fornece instruções claras e permite restabelecer o acesso após as validações previstas. O login final identifica AL01 e direciona à área de aluno."
+        }
+      ]
+    },
+    {
+      "id": "UC02",
+      "title": "Consultar planos e modalidades",
+      "actor": "Visitante e aluno",
+      "objective": "Validar a consulta ao conteúdo público de planos, modalidades, horários, localização e contato, incluindo filtros, detalhes e encaminhamentos (OF02).",
+      "base": "Ambiente de homologação com catálogo fictício conhecido. PL01 é um plano ativo de R$ 99/mês; PL02 está indisponível. Modalidades, horários, localização e contato de teste possuem valores de referência registrados. AL01 possui conta ativa.",
+      "tests": [
+        {
+          "id": "CT02-01",
+          "title": "Consultar catálogo como visitante e aluno",
+          "priority": "Alta",
+          "pre": "PL01 está publicado; modalidade de teste vinculada ao catálogo e disponível para consulta.",
+          "data": "PL01: R$ 99/mês; modalidade: Musculação; perfis: visitante e AL01.",
+          "steps": [
+            "Abrir a seção de planos e modalidades sem autenticação.",
+            "Conferir PL01 e a modalidade com os dados de referência.",
+            "Repetir a consulta após entrar como AL01."
+          ],
+          "expected": "Os dois perfis conseguem consultar o catálogo. Nome, valor e detalhes de PL01 correspondem à massa de teste; a modalidade publicada é exibida sem exigir cadastro do visitante."
+        },
+        {
+          "id": "CT02-02",
+          "title": "Filtrar o catálogo e consultar detalhes",
+          "priority": "Média",
+          "pre": "Catálogo contém itens correspondentes ao filtro e itens distintos; referências registradas.",
+          "data": "Filtro disponível correspondente a PL01 ou à modalidade Musculação; outro valor sem correspondência.",
+          "steps": [
+            "Aplicar o filtro com correspondência e abrir um resultado.",
+            "Conferir detalhes com o cadastro de referência.",
+            "Aplicar o filtro sem correspondência e depois limpar a seleção."
+          ],
+          "expected": "O filtro exibe apenas itens correspondentes; os detalhes pertencem ao item selecionado. A busca sem resultado informa ausência de itens. Limpar o filtro restaura a listagem."
+        },
+        {
+          "id": "CT02-03",
+          "title": "Consultar horários, localização e contato",
+          "priority": "Média",
+          "pre": "Conteúdo público de homologação cadastrado com os dados fictícios de referência.",
+          "data": "Horário: segunda-feira às 19h; localização: Rua Exemplo, 100; contato: contato@example.test.",
+          "steps": [
+            "Abrir as áreas públicas de horários, localização e contato.",
+            "Comparar os valores exibidos com a massa de referência.",
+            "Repetir a consulta como AL01."
+          ],
+          "expected": "Visitante e aluno visualizam horário, endereço e canal de contato corretos, com identificação clara de cada informação. Os dados não são confundidos com informações de outro registro."
+        },
+        {
+          "id": "CT02-04",
+          "title": "Iniciar contato ou matrícula pelo catálogo",
+          "priority": "Alta",
+          "pre": "PL01 acessível; encaminhamentos de contato e matrícula configurados em homologação.",
+          "data": "Plano PL01: R$ 99/mês; canal de teste: contato@example.test; perfil visitante e AL01.",
+          "steps": [
+            "Abrir os detalhes de PL01 e acionar a opção de contato, sem enviar mensagem.",
+            "Retornar ao catálogo e iniciar a matrícula em PL01.",
+            "Se solicitado, autenticar AL01 e conferir o plano selecionado."
+          ],
+          "expected": "O contato encaminha ao canal configurado. O início da matrícula conduz ao fluxo correspondente a PL01, preservando sua identificação e exigindo autenticação quando aplicável."
+        },
+        {
+          "id": "CT02-05",
+          "title": "Tratar catálogo vazio e indisponibilidade",
+          "priority": "Média",
+          "pre": "Ambiente permite preparar catálogo vazio e simular indisponibilidade temporária.",
+          "data": "Conjunto A: catálogo sem itens. Conjunto B: consulta de catálogo indisponível, com dados de PL01 preservados na origem.",
+          "steps": [
+            "Consultar planos e modalidades com o conjunto A.",
+            "Preparar o conjunto B e repetir a consulta.",
+            "Restabelecer a consulta e atualizar."
+          ],
+          "expected": "A lista vazia recebe indicação própria; a falha temporária é informada de modo claro, sem representar sucesso ou inventar itens. Após o restabelecimento, os dados disponíveis voltam a ser consultáveis."
+        }
+      ]
+    },
+    {
+      "id": "UC03",
+      "title": "Solicitar matrícula",
+      "actor": "Aluno",
+      "objective": "Validar solicitação de matrícula, aceite dos termos, protocolo e acompanhamento da situação, sem pagamento real ou dados bancários (OF03).",
+      "base": "Ambiente de homologação com matrícula e persistência disponíveis; AL01 e AL02 são alunos ativos, AL03 possui matrícula inativa. PL01 está ativo por R$ 99/mês e PL02 indisponível. Cada cenário deve restaurar as matrículas iniciais e registrar a regra configurada de incompatibilidade.",
+      "tests": [
+        {
+          "id": "CT03-01",
+          "title": "Solicitar matrícula em plano disponível",
+          "priority": "Alta",
+          "pre": "AL03 está autenticado, com dados cadastrais completos e sem matrícula ativa incompatível com PL01.",
+          "data": "AL03: al03@example.test; PL01: R$ 99/mês; aceite dos termos marcado.",
+          "steps": [
+            "Selecionar PL01 e conferir os dados apresentados.",
+            "Confirmar os dados, aceitar os termos e enviar a solicitação.",
+            "Consultar o protocolo e a solicitação registrada."
+          ],
+          "expected": "Uma solicitação vincula AL03 a PL01, com protocolo e situação inicial conforme o fluxo configurado. Os dados exibidos correspondem ao registro. Nenhum pagamento real ou dado bancário é solicitado."
+        },
+        {
+          "id": "CT03-02",
+          "title": "Acompanhar situação da solicitação",
+          "priority": "Alta",
+          "pre": "AL03 está autenticado e possui solicitação de PL01 registrada, com protocolo e situação conhecidos na massa de teste.",
+          "data": "Aluno AL03; plano PL01; protocolo de homologação MAT-TESTE-001; situação de referência configurada.",
+          "steps": [
+            "Abrir o acompanhamento de matrícula de AL03.",
+            "Localizar MAT-TESTE-001 e conferir plano e situação.",
+            "Atualizar a página e repetir a consulta."
+          ],
+          "expected": "O acompanhamento apresenta protocolo, aluno, plano e situação coerentes com a solicitação persistida. A atualização mantém os dados corretos e não gera outra solicitação."
+        },
+        {
+          "id": "CT03-03",
+          "title": "Rejeitar solicitação com dados incompletos",
+          "priority": "Alta",
+          "pre": "AL03 está autenticado; massa preparada com um campo cadastral obrigatório ausente, identificado pela regra configurada.",
+          "data": "AL03; PL01; campo obrigatório de confirmação vazio; demais campos válidos; termos aceitos.",
+          "steps": [
+            "Selecionar PL01 e manter vazio o campo obrigatório definido na massa.",
+            "Tentar enviar a solicitação.",
+            "Consultar os registros de matrícula de AL03."
+          ],
+          "expected": "O sistema identifica o campo a corrigir e impede a conclusão. Nenhuma nova solicitação nem protocolo de sucesso é registrado para os dados incompletos."
+        },
+        {
+          "id": "CT03-04",
+          "title": "Exigir aceite dos termos",
+          "priority": "Alta",
+          "pre": "AL03 está autenticado, com dados completos e sem matrícula ativa incompatível.",
+          "data": "AL03; PL01; aceite dos termos não marcado.",
+          "steps": [
+            "Selecionar PL01 e confirmar os dados cadastrais.",
+            "Manter os termos sem aceite e tentar concluir a solicitação.",
+            "Consultar os registros de AL03 e verificar se uma nova solicitação foi criada."
+          ],
+          "expected": "A conclusão exige o aceite e informa essa necessidade. Sem aceite, nenhuma matrícula é solicitada e nenhum protocolo de sucesso é emitido."
+        },
+        {
+          "id": "CT03-05",
+          "title": "Impedir matrícula em plano indisponível",
+          "priority": "Alta",
+          "pre": "AL03 está autenticado; PL02 está indisponível. Ambiente permite submeter sua identificação no fluxo de homologação.",
+          "data": "AL03; PL02; dados cadastrais completos e termos aceitos.",
+          "steps": [
+            "Abrir o fluxo de matrícula apontando para PL02.",
+            "Tentar confirmar a solicitação.",
+            "Consultar a resposta e os registros de matrícula."
+          ],
+          "expected": "A indisponibilidade é informada e nenhuma solicitação válida é criada para PL02. Alterar a entrada para referenciar o plano não contorna a validação de disponibilidade."
+        },
+        {
+          "id": "CT03-06",
+          "title": "Bloquear matrícula ativa incompatível",
+          "priority": "Alta",
+          "pre": "AL01 está autenticado e possui matrícula ativa que, segundo a regra configurada e registrada, é incompatível com nova solicitação de PL01.",
+          "data": "AL01: al01@example.test; PL01; dados completos; termos aceitos; combinação incompatível definida na massa.",
+          "steps": [
+            "Selecionar PL01 e confirmar os dados de AL01.",
+            "Aceitar os termos e tentar enviar a solicitação.",
+            "Conferir as matrículas e a resposta apresentada."
+          ],
+          "expected": "O sistema informa a incompatibilidade e impede a nova solicitação. A matrícula ativa existente permanece inalterada, sem protocolo de sucesso para a tentativa recusada."
+        }
+      ]
+    },
+    {
+      "id": "UC04",
+      "title": "Agendar ou cancelar aula",
+      "actor": "Aluno",
+      "objective": "Reservar ou liberar uma vaga em aula coletiva, mantendo a capacidade e as reservas consistentes.",
+      "base": "Ambiente integrado de homologação; AL01 autenticado, com matrícula ativa. Recriar a massa antes de cada cenário; as exceções são indicadas em cada caso.",
+      "tests": [
+        {
+          "id": "CT04-01",
+          "title": "Reserva com vaga disponível",
+          "priority": "Alta",
+          "pre": "AL01 sem reserva ou conflito no horário de AU01.",
+          "data": "AU01: capacidade 10, nove reservas de outros alunos e uma vaga.",
+          "steps": [
+            "Consultar a agenda, abrir AU01 e confirmar a reserva.",
+            "Atualizar a página e consultar a reserva em nova sessão."
+          ],
+          "expected": "Uma reserva ativa de AL01 para AU01; ocupação 10 e zero vagas. A confirmação e a nova sessão mostram a mesma reserva persistida."
+        },
+        {
+          "id": "CT04-02",
+          "title": "Reserva sem matrícula ativa",
+          "priority": "Alta",
+          "pre": "Executar com AL03 autenticado e matrícula inativa.",
+          "data": "AU01 com uma vaga e AL03 sem reserva.",
+          "steps": [
+            "Abrir AU01 e tentar reservar.",
+            "Consultar reservas e ocupação no servidor."
+          ],
+          "expected": "Operação negada com orientação sobre a matrícula; nenhuma reserva criada e a vaga permanece disponível."
+        },
+        {
+          "id": "CT04-03",
+          "title": "Aula lotada",
+          "priority": "Alta",
+          "pre": "AL01 sem reserva para AU02.",
+          "data": "AU02: capacidade 10 e dez reservas ativas.",
+          "steps": [
+            "Consultar AU02 e tentar reservar; enviar também a solicitação ao servidor no ambiente de teste.",
+            "Reconsultar ocupação e reservas."
+          ],
+          "expected": "Interface informa lotação e servidor rejeita a operação; ocupação permanece 10, sem reserva adicional."
+        },
+        {
+          "id": "CT04-04",
+          "title": "Solicitação duplicada",
+          "priority": "Alta",
+          "pre": "AL01 já tem reserva ativa em AU01.",
+          "data": "AU01 com ocupação 9, incluindo AL01, e uma vaga; mesma combinação aluno e aula.",
+          "steps": [
+            "Reenviar a solicitação de reserva para AU01 duas vezes.",
+            "Atualizar a agenda e consultar as reservas de AL01."
+          ],
+          "expected": "Permanece exatamente uma reserva ativa para AL01 e AU01. Ocupação 9 e uma vaga disponível; mensagem informa a reserva existente."
+        },
+        {
+          "id": "CT04-05",
+          "title": "Conflito de horário",
+          "priority": "Alta",
+          "pre": "AL01 tem reserva em AU03, das 18h às 19h em D+2.",
+          "data": "AU04 no mesmo dia, das 18h30 às 19h30, com vaga.",
+          "steps": [
+            "Selecionar AU04 e confirmar reserva.",
+            "Consultar a agenda e as duas aulas."
+          ],
+          "expected": "Conflito informado; somente a reserva de AU03 permanece ativa. A ocupação de AU04 não muda."
+        },
+        {
+          "id": "CT04-06",
+          "title": "Cancelamento dentro do prazo",
+          "priority": "Alta",
+          "pre": "AL01 tem reserva em AU01 e antecedência maior que T.",
+          "data": "AU01: capacidade 10 e ocupação 10; prazo T configurado.",
+          "steps": [
+            "Abrir a reserva de AU01 e confirmar cancelamento.",
+            "Atualizar a página e reenviar o cancelamento da mesma reserva."
+          ],
+          "expected": "Reserva fica cancelada e uma vaga é liberada. Repetir a solicitação não libera outra vaga; ocupação final 9 e uma vaga."
+        },
+        {
+          "id": "CT04-07",
+          "title": "Cancelamento fora do prazo",
+          "priority": "Alta",
+          "pre": "AL01 tem reserva em AU01; relógio de homologação permite controlar o tempo.",
+          "data": "Antecedência menor que T por uma unidade de precisão do sistema.",
+          "steps": [
+            "Tentar cancelar AU01 após o limite permitido.",
+            "Atualizar a página e consultar a reserva."
+          ],
+          "expected": "Cancelamento recusado com indicação do prazo. Reserva continua ativa e nenhuma vaga é liberada."
+        },
+        {
+          "id": "CT04-08",
+          "title": "Limite exato de cancelamento",
+          "priority": "Alta",
+          "pre": "Restaurar reserva ativa e relógio antes de cada variação.",
+          "data": "Antecedência T+ε, T e T−ε; ε é a menor unidade de precisão do sistema.",
+          "steps": [
+            "Tentar cancelar uma vez em cada antecedência, com massa restaurada.",
+            "Conferir status e ocupação após cada tentativa."
+          ],
+          "expected": "T+ε permite e T−ε impede cancelamento. Em T, aplicar a inclusão ou exclusão do limite registrada na política de homologação. Vaga liberada uma única vez apenas quando permitido."
+        },
+        {
+          "id": "CT04-09",
+          "title": "Concorrência pela última vaga",
+          "priority": "Alta",
+          "pre": "AL01 e AL02 ativos, sem conflitos e em sessões distintas.",
+          "data": "AU01 com capacidade 10, ocupação 9 e uma vaga.",
+          "steps": [
+            "Disparar as duas solicitações de reserva simultaneamente por barreira de sincronização no teste de integração.",
+            "Consultar as respostas, a ocupação e as reservas persistidas."
+          ],
+          "expected": "Exatamente uma nova reserva é confirmada; a outra recebe indisponibilidade. Ocupação final 10 e zero vagas, sem excesso de capacidade."
+        },
+        {
+          "id": "CT04-10",
+          "title": "Falha durante a gravação",
+          "priority": "Alta",
+          "pre": "AL01 elegível; injetar falha de persistência em homologação.",
+          "data": "AU01 com uma vaga; erro de gravação antes da confirmação da transação.",
+          "steps": [
+            "Tentar reservar com a falha ativa.",
+            "Restaurar o serviço, consultar a aula e repetir a operação."
+          ],
+          "expected": "Primeira tentativa informa erro, sem sucesso nem gravação parcial. Após a recuperação, uma única reserva é criada e a ocupação aumenta uma vez."
+        },
+        {
+          "id": "CT04-11",
+          "title": "Permissão sobre a reserva",
+          "priority": "Alta",
+          "pre": "AL02 possui uma reserva; identificar seu código apenas na massa de teste.",
+          "data": "Visitante sem sessão e AL01 autenticado.",
+          "steps": [
+            "Como visitante, enviar uma solicitação de reserva.",
+            "Como AL01, tentar cancelar a reserva de AL02 pelo servidor."
+          ],
+          "expected": "Solicitações negadas por autenticação e autorização, respectivamente. Nenhuma reserva ou vaga é alterada e dados privados de AL02 não são expostos."
+        }
+      ]
+    },
+    {
+      "id": "UC05",
+      "title": "Consultar plano de treino",
+      "actor": "Aluno e instrutor",
+      "objective": "Consultar a prescrição vigente, suas sessões, exercícios, séries, cargas e descansos.",
+      "base": "Base de testes isolada; AL01 e AL02 ativos; IN01 autorizado a consultar AL01 e IN02 sem autorização. TR01 vigente de AL01, com sessões A e B; TR02 vencido; TR03 sem exercícios. Reiniciar a base entre cenários.",
+      "tests": [
+        {
+          "id": "CT05-01",
+          "title": "Consultar sessões do treino vigente como aluno",
+          "priority": "Alta",
+          "pre": "AL01 autenticado; TR01 é seu único treino vigente e contém duas sessões distintas.",
+          "data": "Sessão A: EX01, 3 séries de 10 repetições, 20 kg, descanso 60 s, orientação Descer controladamente; sessão B: EX02, 2 séries de 12 repetições, 15 kg, 45 s, orientação Manter tronco estável.",
+          "steps": [
+            "Abrir Meu treino e selecionar a sessão A.",
+            "Selecionar a sessão B e conferir seus exercícios.",
+            "Reabrir a consulta após atualizar a página."
+          ],
+          "expected": "Deve exibir exercício, séries, repetições, carga, descanso e orientação da sessão selecionada, sem misturar dados ou alterar a prescrição persistida."
+        },
+        {
+          "id": "CT05-02",
+          "title": "Consultar aluno autorizado como instrutor",
+          "priority": "Alta",
+          "pre": "IN01 autenticado e autorizado sobre AL01; TR01 contém EX01 e EX02 prescritos.",
+          "data": "TR01: EX01, 3 séries de 10 repetições, 20 kg, 60 s, orientação Descer controladamente; EX02, 2 séries de 12 repetições, 15 kg, 45 s, orientação Manter tronco estável.",
+          "steps": [
+            "Selecionar AL01 na área do instrutor e abrir seu treino.",
+            "Conferir as sessões e comparar as prescrições com a base preparada.",
+            "Sair da consulta e abri-la novamente."
+          ],
+          "expected": "Deve apresentar o treino vigente de AL01 com séries, repetições, cargas, descansos e orientações corretos, preservando identificação, versão, valores e vínculo do plano."
+        },
+        {
+          "id": "CT05-03",
+          "title": "Consultar aluno sem plano atribuído",
+          "priority": "Média",
+          "pre": "AL02 autenticado, com matrícula ativa e nenhum plano de treino atribuído.",
+          "data": "AL02 sem prescrições; TR01 permanece exclusivamente associado a AL01, para verificar que dados de outro aluno não preencham a consulta.",
+          "steps": [
+            "Abrir a área Meu treino com AL02.",
+            "Atualizar a página e repetir a consulta.",
+            "Conferir os vínculos de planos na base."
+          ],
+          "expected": "Deve informar que não há plano disponível, sem apresentar exercícios de AL01 ou falha técnica. Nenhum plano, exercício ou vínculo deve ser criado pela consulta."
+        },
+        {
+          "id": "CT05-04",
+          "title": "Identificar plano vencido",
+          "priority": "Alta",
+          "pre": "AL01 autenticado; nesta preparação, possui apenas TR02 vencido, sem prescrição vigente.",
+          "data": "Relógio de teste em 14/10/2026; TR02 com término em 13/10/2026 e EX01 cadastrado; consulta feita após o término.",
+          "steps": [
+            "Abrir Meu treino e verificar o plano selecionado pelo sistema.",
+            "Se houver consulta histórica, abrir os detalhes de TR02.",
+            "Conferir a vigência armazenada na base."
+          ],
+          "expected": "Não deve apresentar TR02 como vigente; deve informar o vencimento ou a ausência de treino vigente. Eventual consulta histórica deve preservar a sinalização e os dados originais."
+        },
+        {
+          "id": "CT05-05",
+          "title": "Impedir consulta sem autorização",
+          "priority": "Alta",
+          "pre": "IN02 autenticado, sem autorização sobre AL01; IN01 consulta TR01 normalmente.",
+          "data": "IN02; aluno AL01; identificador TR01 obtido exclusivamente da base fictícia preparada para o teste de acesso.",
+          "steps": [
+            "Tentar localizar AL01 na área de acompanhamento de IN02.",
+            "Tentar abrir diretamente a consulta de TR01 pelo mecanismo disponível no ambiente.",
+            "Conferir a resposta e os dados persistidos."
+          ],
+          "expected": "Deve negar o acesso sem revelar exercícios, cargas ou demais dados de AL01. A tentativa não deve modificar TR01 nem conceder autorização a IN02."
+        },
+        {
+          "id": "CT05-06",
+          "title": "Tratar prescrição sem exercícios",
+          "priority": "Média",
+          "pre": "AL01 autenticado; TR03 preparado sem exercícios simula uma inconsistência independente das validações do UC07.",
+          "data": "TR03 associado a AL01, com sessão A vazia; nenhum exercício deve ser copiado automaticamente de TR01 ou de outro aluno.",
+          "steps": [
+            "Abrir a consulta de TR03 e selecionar a sessão vazia.",
+            "Atualizar a página e repetir a consulta.",
+            "Conferir os exercícios vinculados na base."
+          ],
+          "expected": "Critério sugerido: informar a ausência de exercícios sem falha técnica nem valores fictícios. O sistema deve preservar a base e não apresentar a sessão vazia como prescrição completa."
+        }
+      ]
+    },
+    {
+      "id": "UC06",
+      "title": "Registrar treino e evolução",
+      "actor": "Aluno",
+      "objective": "Registrar exercícios, cargas, observações e medidas de acompanhamento, preservando histórico e evolução.",
+      "base": "AL01 autenticado; TR01 vigente com EX01 agachamento e EX02 remada. Registros fictícios em base isolada. Limites numéricos, tipos e unidades das medidas devem ser configurados e registrados; comportamento de rascunhos é parâmetro proposto a confirmar.",
+      "tests": [
+        {
+          "id": "CT06-01",
+          "title": "Salvar execução e consultar histórico",
+          "priority": "Alta",
+          "pre": "AL01 possui TR01 vigente; não existe registro da sessão preparada para este teste.",
+          "data": "Sessão A em 14/10/2026; EX01 executado com 20 kg; EX02 executado com 15 kg; observação: Movimento realizado com controle.",
+          "steps": [
+            "Abrir o registro de TR01 e marcar os dois exercícios executados.",
+            "Informar as cargas e a observação; salvar.",
+            "Reabrir o histórico após nova autenticação de AL01."
+          ],
+          "expected": "Deve manter um registro com aluno, treino, exercícios, cargas e observação corretos. A gravação da execução não deve alterar as cargas prescritas no plano original."
+        },
+        {
+          "id": "CT06-02",
+          "title": "Rejeitar valor não numérico na carga",
+          "priority": "Alta",
+          "pre": "AL01 abriu o registro de TR01; nenhum dado desta tentativa foi salvo.",
+          "data": "EX01 marcado como executado; carga informada como vinte no campo numérico; EX02 com 15 kg e observação válida.",
+          "steps": [
+            "Preencher a carga de EX01 com o texto indicado.",
+            "Tentar salvar e verificar a indicação de erro.",
+            "Corrigir para 20 kg e salvar novamente."
+          ],
+          "expected": "Deve rejeitar o valor incompatível sem persistir execução parcial. Após a correção, deve salvar somente um registro válido, preservando os demais dados preenchidos."
+        },
+        {
+          "id": "CT06-03",
+          "title": "Validar limites numéricos parametrizados",
+          "priority": "Média",
+          "pre": "AL01 registra TR01; documentar previamente limites inclusivos L/U por campo e precisão ε aprovada para cargas.",
+          "data": "Variações independentes: carga em L-ε, L, U e U+ε; repetições em L-1, L, U, U+1 e valor fracionário L+0,5.",
+          "steps": [
+            "Registrar os parâmetros L/U e ε; preencher EX01 com uma variação por tentativa.",
+            "Tentar salvar, anotando valor enviado e resultado da validação.",
+            "Reiniciar cada tentativa e conferir os registros persistidos."
+          ],
+          "expected": "Deve aceitar limites L/U, rejeitar valores externos e repetições fracionárias. O histórico deve conter apenas valores válidos, sem alterar a prescrição; evidências devem registrar os limites efetivamente usados."
+        },
+        {
+          "id": "CT06-04",
+          "title": "Interromper preenchimento antes de salvar",
+          "priority": "Alta",
+          "pre": "AL01 preenche TR01; anotar previamente a quantidade de execuções presentes no histórico.",
+          "data": "EX01 marcado com 20 kg; observação: Preenchimento interrompido; nenhum comando de confirmação ou salvamento foi acionado.",
+          "steps": [
+            "Preencher parcialmente o formulário com os dados indicados.",
+            "Sair da página ou fechar a sessão antes de salvar.",
+            "Entrar novamente e consultar o formulário e o histórico."
+          ],
+          "expected": "Não deve registrar treino concluído sem confirmação. Caso existam rascunhos, devem ser identificados separadamente; sua retenção depende de critério acordado, sem alteração do histórico concluído."
+        },
+        {
+          "id": "CT06-05",
+          "title": "Interromper comunicação durante salvamento",
+          "priority": "Alta",
+          "pre": "Ambiente permite interromper a comunicação durante a gravação; AL01 preencheu uma execução válida.",
+          "data": "EX01 com 20 kg, EX02 com 15 kg; observação: Teste de interrupção; identificar a tentativa para conferência posterior.",
+          "steps": [
+            "Acionar Salvar e interromper a comunicação antes da confirmação.",
+            "Restabelecer a conexão e consultar o histórico antes de repetir o envio.",
+            "Conferir os dados efetivamente persistidos."
+          ],
+          "expected": "Critério sugerido: deve existir uma execução completa ou nenhuma, sem registros parciais. A interface deve permitir verificar o resultado sem afirmar sucesso que não tenha sido confirmado."
+        },
+        {
+          "id": "CT06-06",
+          "title": "Preservar evolução após revisão da prescrição",
+          "priority": "Alta",
+          "pre": "AL01 possui execução anterior de EX01 em 20 kg; IN01 pode revisar TR01.",
+          "data": "Registro anterior em 12/10/2026 com observação: Execução inicial; revisão posterior prescreve 25 kg; nova execução utiliza 22 kg.",
+          "steps": [
+            "Revisar a carga prescrita para 25 kg como IN01.",
+            "Entrar como AL01 e registrar nova execução com 22 kg.",
+            "Consultar os dois registros após reabrir o histórico."
+          ],
+          "expected": "Deve preservar o registro anterior em 20 kg e a nova execução em 22 kg. A carga prescrita de 25 kg não deve substituir cargas históricas realizadas."
+        },
+        {
+          "id": "CT06-07",
+          "title": "Impedir registro para outro aluno",
+          "priority": "Alta",
+          "pre": "AL02 autenticado; TR01 pertence a AL01; registrar seu histórico inicial para comparação.",
+          "data": "Tentativa com aluno AL01, treino TR01 e EX01 em 20 kg, enviada em sessão de AL02 pelo mecanismo disponível.",
+          "steps": [
+            "Tentar abrir o formulário de TR01 com a sessão de AL02.",
+            "Tentar salvar a execução para AL01 pelo mesmo ambiente.",
+            "Conferir os históricos de AL01 e AL02."
+          ],
+          "expected": "Deve negar o registro em nome de outro aluno. Nenhum histórico deve receber a execução e nenhum vínculo deve ser transferido."
+        },
+        {
+          "id": "CT06-08",
+          "title": "Registrar medidas e consultar evolução",
+          "priority": "Alta",
+          "pre": "AL01 autenticado; ambiente preparado com tipo de medida peso e unidade kg, conforme configuração registrada antes da execução.",
+          "data": "Duas medições fictícias: 70,0 kg em 01/10/2026 e 71,0 kg em 14/10/2026; registrar o tipo e a unidade efetivamente configurados.",
+          "steps": [
+            "Salvar a primeira medição e depois a segunda, com suas respectivas datas.",
+            "Reabrir o histórico e a consulta de evolução após nova autenticação.",
+            "Selecionar o período das medições e comparar valores e gráfico."
+          ],
+          "expected": "Deve persistir as duas datas, valores e unidades; histórico e gráfico devem mostrar pontos correspondentes em ordem cronológica, com diferença de 1,0 kg, sem substituir a primeira medição."
+        }
+      ]
+    },
+    {
+      "id": "UC07",
+      "title": "Gerenciar treinos de alunos",
+      "actor": "Instrutor",
+      "objective": "Criar, revisar, atribuir e encerrar planos dos alunos autorizados, preservando seu histórico.",
+      "base": "IN01 autenticado e autorizado sobre AL01; IN02 sem autorização sobre AL01. TR01 vigente contém EX01 e EX02. A base é reiniciada entre cenários; regras não descritas de encerramento ou acesso por perfil devem ser confirmadas.",
+      "tests": [
+        {
+          "id": "CT07-01",
+          "title": "Criar e publicar plano completo",
+          "priority": "Alta",
+          "pre": "IN01 autorizado sobre AL01; nesta preparação, AL01 não possui plano vigente.",
+          "data": "Novo plano TR10; sessão A; EX01 com 3 séries, 20 kg e 60 s de descanso; EX02 com 2 séries, 15 kg e 45 s.",
+          "steps": [
+            "Selecionar AL01 e criar TR10 com sessão e exercícios.",
+            "Preencher os campos exigidos e publicar.",
+            "Reabrir o plano como instrutor e consultá-lo como AL01."
+          ],
+          "expected": "Deve persistir e apresentar a mesma prescrição completa nos dois acessos, associada somente a AL01, com versão identificável e sem exercícios duplicados."
+        },
+        {
+          "id": "CT07-02",
+          "title": "Revisar sem apagar histórico",
+          "priority": "Alta",
+          "pre": "IN01 autorizado sobre AL01; TR01 possui execução histórica de EX01 em 20 kg.",
+          "data": "Prescrição anterior de EX01: 3 séries, 20 kg, 60 s; revisão proposta: 4 séries, 25 kg, 75 s; EX02 permanece igual.",
+          "steps": [
+            "Abrir TR01, revisar os três valores de EX01 e publicar nova versão.",
+            "Reabrir a prescrição vigente como AL01.",
+            "Consultar a execução histórica e comparar seus dados."
+          ],
+          "expected": "Deve exibir os novos valores na versão publicada e preservar integralmente o histórico anterior. A revisão não deve alterar EX02 nem criar execução retroativa."
+        },
+        {
+          "id": "CT07-03",
+          "title": "Atribuir plano ao aluno selecionado",
+          "priority": "Alta",
+          "pre": "Nesta preparação, IN01 também está autorizado sobre AL02, sem plano vigente; AL01 mantém TR01.",
+          "data": "Plano novo TR11 para AL02; sessão A com EX02, 2 séries, 15 kg e 45 s de descanso; nenhum vínculo com AL01.",
+          "steps": [
+            "Selecionar AL02, preencher TR11 e confirmar a atribuição.",
+            "Consultar Meu treino como AL02 e verificar a prescrição.",
+            "Consultar AL01 e conferir os vínculos na base."
+          ],
+          "expected": "Deve atribuir TR11 exclusivamente a AL02 e permitir sua consulta. TR01 deve continuar associado a AL01 sem alteração de conteúdo ou titularidade."
+        },
+        {
+          "id": "CT07-04",
+          "title": "Encerrar plano preservando registros anteriores",
+          "priority": "Alta",
+          "pre": "IN01 autorizado sobre AL01; TR01 vigente possui execução histórica íntegra anterior ao encerramento.",
+          "data": "TR01 de AL01; execução em 12/10/2026 com EX01 em 20 kg; encerramento preparado para 14/10/2026, sem outro plano vigente.",
+          "steps": [
+            "Abrir TR01 como IN01 e confirmar seu encerramento.",
+            "Reabrir a consulta de treino de AL01.",
+            "Conferir o estado do plano e a execução anterior."
+          ],
+          "expected": "Deve deixar de apresentar TR01 como prescrição vigente e preservar os registros anteriores. A apresentação do motivo ou da data de encerramento depende dos campos definidos pelo projeto."
+        },
+        {
+          "id": "CT07-05",
+          "title": "Impedir publicação de plano incompleto",
+          "priority": "Alta",
+          "pre": "IN01 autorizado sobre AL01; TR01 vigente deve continuar disponível se TR03 for rejeitado.",
+          "data": "Nova prescrição TR03 com sessão A sem exercícios; demais campos exigidos preenchidos com dados válidos da base de testes.",
+          "steps": [
+            "Preparar TR03 com a sessão vazia e tentar publicar.",
+            "Verificar a indicação de incompletude e retornar à consulta de AL01.",
+            "Conferir qual plano está vigente na base."
+          ],
+          "expected": "Deve impedir a publicação da prescrição incompleta e informar o problema. TR01 deve permanecer vigente; eventual rascunho de TR03 não deve substituir a prescrição válida."
+        },
+        {
+          "id": "CT07-06",
+          "title": "Bloquear gestão de aluno não autorizado",
+          "priority": "Alta",
+          "pre": "IN02 autenticado sem autorização sobre AL01; registrar conteúdo, estado e versão iniciais de TR01.",
+          "data": "Aluno AL01; TR01; alteração tentada em EX01 para 99 kg; executar tentativas independentes de revisar, atribuir novo plano e encerrar.",
+          "steps": [
+            "Tentar abrir a gestão de AL01 com IN02.",
+            "Para cada operação indicada, tentar confirmar a ação pelo mecanismo de teste disponível.",
+            "Comparar vínculos, versões e estados com a base inicial."
+          ],
+          "expected": "Deve negar todas as operações e preservar TR01 integralmente. Nenhum plano adicional, nova autorização ou encerramento deve ser persistido para AL01."
+        },
+        {
+          "id": "CT07-07",
+          "title": "Restringir publicação ao perfil autorizado",
+          "priority": "Alta",
+          "pre": "AL01 autenticado somente como aluno; registrar TR01 e seu histórico para comparação.",
+          "data": "TR01 de AL01; tentativa de trocar a prescrição de EX01 para 50 kg por acesso direto à operação de publicação.",
+          "steps": [
+            "Tentar acessar a área de gestão de treinos como AL01.",
+            "Tentar publicar a alteração pelo mecanismo de teste disponível.",
+            "Conferir a prescrição vigente e suas versões."
+          ],
+          "expected": "O perfil de aluno deve ser impedido de publicar prescrições. Cargas prescritas, versões e histórico devem permanecer idênticos aos valores iniciais."
+        }
+      ]
+    },
+    {
+      "id": "UC08",
+      "title": "Administrar cadastros, planos e aulas",
+      "actor": "Administrador",
+      "objective": "Manter alunos, modalidades, planos, horários e aulas com validação de dados e integridade dos vínculos.",
+      "base": "AD01 autenticado como administrador em base isolada. Usar dados fictícios AL90, MO90, PL90, HO90 e AU90; campos obrigatórios e chaves únicas definidos no esquema do ambiente. Executar cada variação independentemente e restaurar a base.",
+      "tests": [
+        {
+          "id": "CT08-01",
+          "title": "Executar CRUD válido nas cinco entidades",
+          "priority": "Alta",
+          "pre": "AD01 acessa os cinco módulos; registros inexistentes, com referências válidas e sem dependências.",
+          "data": "Variações (inicial → alterado): aluno AL90, Lia Teste → Lia Revisada, lia90@example.test; modalidade MO90, Alongamento → Mobilidade; plano PL90, Experimental → Revisado; horário HO90, 18:00 → 19:00; aula AU90, Sessão Teste → Sessão Revisada.",
+          "steps": [
+            "Para cada entidade, criar o registro e consultar seus detalhes.",
+            "Alterar um campo permitido e conferir após reabrir.",
+            "Excluir o registro sem dependentes e consultar novamente."
+          ],
+          "expected": "Em cada variação, criação, leitura, alteração e exclusão devem persistir corretamente; a lista deve refletir cada operação sem afetar registros externos ao cenário."
+        },
+        {
+          "id": "CT08-02",
+          "title": "Rejeitar ausência de dado obrigatório",
+          "priority": "Alta",
+          "pre": "AD01 autenticado; identificar previamente um campo obrigatório de cada entidade conforme o esquema aprovado.",
+          "data": "Variações independentes AL90, MO90, PL90, HO90 e AU90; preencher todos os campos com dados válidos, exceto o campo obrigatório escolhido.",
+          "steps": [
+            "Abrir a criação da entidade e deixar o campo selecionado vazio.",
+            "Tentar salvar e verificar a validação apresentada.",
+            "Pesquisar o identificador na lista e na base."
+          ],
+          "expected": "Deve indicar o dado obrigatório ausente e impedir a gravação incompleta em cada variação. Não deve criar registro parcial nem alterar referências existentes."
+        },
+        {
+          "id": "CT08-03",
+          "title": "Impedir registro duplicado",
+          "priority": "Alta",
+          "pre": "AD01 autenticado; existe um registro por módulo; documentar a chave única de cada entidade.",
+          "data": "Reutilizar a chave única de AL90, MO90, PL90, HO90 ou AU90 em novo cadastro; exemplo proposto para aluno: lia90@example.test, se e-mail for único.",
+          "steps": [
+            "Criar novo registro repetindo a chave do registro original.",
+            "Preencher os demais campos validamente e tentar salvar.",
+            "Contar os registros com a mesma chave e conferir o original."
+          ],
+          "expected": "Deve informar duplicidade e manter apenas o registro original íntegro. Nomes iguais só devem ser rejeitados quando constituírem chave única definida."
+        },
+        {
+          "id": "CT08-04",
+          "title": "Impedir exclusão de registro vinculado",
+          "priority": "Alta",
+          "pre": "AD01 autenticado; preparar dependências previstas no modelo e registrar seus identificadores.",
+          "data": "Exemplos de vínculos: aluno com matrícula, plano com matrícula, modalidade ou horário associado a aula, aula com reserva; usar exclusivamente registros fictícios isolados.",
+          "steps": [
+            "Selecionar um registro cuja dependência esteja ativa na base.",
+            "Solicitar e confirmar sua exclusão, quando houver confirmação.",
+            "Consultar novamente o registro e todas as dependências preparadas."
+          ],
+          "expected": "Deve impedir a exclusão por vínculo existente e informar a restrição. Registro principal e dependências devem permanecer íntegros, sem remoção em cascata ou referências órfãs."
+        },
+        {
+          "id": "CT08-05",
+          "title": "Negar manutenção para perfil não administrativo",
+          "priority": "Alta",
+          "pre": "AL01 e IN01 autenticados sem perfil administrativo; registros fictícios existem para comparação.",
+          "data": "Executar para aluno e instrutor as tentativas de criar AL91, alterar PL90 e excluir AU90; usar dados válidos nas operações.",
+          "steps": [
+            "Acessar a área administrativa com cada perfil indicado.",
+            "Tentar as operações diretamente pelo mecanismo de teste disponível.",
+            "Comparar listas e registros com o estado inicial."
+          ],
+          "expected": "Deve negar manutenção por esses perfis, inclusive acesso direto. Nenhum cadastro deve ser criado, alterado ou excluído pelas tentativas."
+        },
+        {
+          "id": "CT08-06",
+          "title": "Impedir alteração após encerramento da sessão",
+          "priority": "Alta",
+          "pre": "AD01 abriu PL90; encerrar sua sessão em outra aba antes de confirmar alterações.",
+          "data": "PL90 com nome Experimental; nova descrição digitada: Alteração após logout; sessão encerrada sem revogar ou alterar o cadastro de AD01.",
+          "steps": [
+            "Preparar a edição de PL90 na primeira aba.",
+            "Encerrar a sessão na segunda aba e tentar salvar na primeira.",
+            "Autenticar novamente e consultar PL90."
+          ],
+          "expected": "Deve exigir autenticação válida e impedir a alteração pela sessão encerrada. A descrição persistida deve permanecer igual à anterior ao teste."
+        },
+        {
+          "id": "CT08-07",
+          "title": "Validar referências de aula",
+          "priority": "Alta",
+          "pre": "AD01 autenticado; AU90 tem modalidade e horário válidos; registrar seus vínculos iniciais.",
+          "data": "Alterar, em variações independentes, a referência de modalidade para MO99 inexistente e de horário para HO99 inexistente na base preparada.",
+          "steps": [
+            "Abrir a edição de AU90 e preparar a referência inválida.",
+            "Tentar salvar pelo mecanismo disponível no ambiente de teste.",
+            "Reabrir AU90 e conferir seus vínculos persistidos."
+          ],
+          "expected": "Critério de integridade sugerido: deve rejeitar referências inexistentes sem atualização parcial. AU90 deve conservar modalidade e horário originais, sem criar cadastros implícitos."
+        },
+        {
+          "id": "CT08-08",
+          "title": "Cancelar edição preservando cadastro",
+          "priority": "Média",
+          "pre": "AD01 autenticado; PL90 tem nome Experimental; registrar descrição inicial para comparação.",
+          "data": "Nome digitado: Experimental revisado; descrição digitada: Alteração descartada; demais campos permanecem iguais aos valores armazenados previamente.",
+          "steps": [
+            "Abrir PL90 e modificar nome e descrição sem salvar.",
+            "Acionar Cancelar ou sair descartando explicitamente as alterações.",
+            "Reabrir a lista e os detalhes do plano."
+          ],
+          "expected": "Critério sugerido para a ação de descarte: deve manter nome e descrição originais, sem atualização parcial ou registro adicional. A lista deve continuar consistente com os detalhes persistidos."
+        }
+      ]
+    }
+  ],
+  "transversais": [
+    {
+      "id": "TNF01",
+      "title": "Usabilidade dos fluxos",
+      "priority": "Média",
+      "pre": "Versão integrada e participante que não recebeu treinamento.",
+      "data": "Consultar plano, solicitar matrícula, reservar aula e consultar treino.",
+      "steps": [
+        "Apresentar somente os objetivos das tarefas e observar sua execução.",
+        "Registrar conclusão, pedidos de ajuda e compreensão das mensagens."
+      ],
+      "expected": "Cada tarefa é concluída sem orientação operacional do avaliador; mensagens de sucesso e erro permitem identificar o resultado e a próxima ação. Relacionado a ONF01."
+    },
+    {
+      "id": "TNF02",
+      "title": "Responsividade",
+      "priority": "Média",
+      "pre": "Aplicação disponível com dados de todos os perfis.",
+      "data": "Larguras de 360, 768, 1280 e 1920 px; zoom inicial 100%.",
+      "steps": [
+        "Percorrer páginas públicas, formulários, agenda, treino e gestão em cada largura.",
+        "Acionar os controles e verificar listas, mensagens e tabelas."
+      ],
+      "expected": "Conteúdo e ações permanecem acessíveis, sem sobreposição, corte ou rolagem horizontal indevida da página. Relacionado a ONF02."
+    },
+    {
+      "id": "TNF03",
+      "title": "Acessibilidade dos percursos",
+      "priority": "Alta",
+      "pre": "Navegador com teclado, leitor de tela e analisador de contraste.",
+      "data": "Percursos UC01 a UC08, incluindo validação de erros.",
+      "steps": [
+        "Percorrer controles por teclado e conferir foco, nomes acessíveis, rótulos, mensagens e alternativas textuais.",
+        "Medir contraste dos textos e registrar os elementos avaliados."
+      ],
+      "expected": "Ações operáveis por teclado, foco visível e sem aprisionamento; campos identificáveis. Contraste mínimo de texto comum 4,5:1 e texto grande 3:1, respeitadas as exceções da WCAG. Esta amostra não certifica conformidade integral. ONF03; referências W3C."
+    },
+    {
+      "id": "TNF04",
+      "title": "Tempo de carregamento público",
+      "priority": "Média",
+      "pre": "Build de produção em homologação, rede móvel estável e dispositivo registrados.",
+      "data": "Página inicial, planos e agenda; cinco carregamentos por página, sem cache.",
+      "steps": [
+        "Medir do início da navegação até o conteúdo principal estar visível e utilizável.",
+        "Registrar os cinco tempos, erros, dispositivo, latência e taxa de rede."
+      ],
+      "expected": "Cada medição é de até 3 segundos, sem erro de carregamento. A métrica e as cinco repetições são a operacionalização proposta neste plano para ONF04."
+    },
+    {
+      "id": "TNF05",
+      "title": "Proteção de sessão e entrada",
+      "priority": "Alta",
+      "pre": "Backend, autenticação e banco de homologação disponíveis.",
+      "data": "Perfis visitante, aluno, instrutor e administrador; entrada inválida e texto com marcação HTML.",
+      "steps": [
+        "Verificar HTTPS e repetir operações protegidas por perfil diretamente no servidor.",
+        "Inspecionar validação de entrada e armazenamento de senha sem expor valores; inserir marcação em campo textual."
+      ],
+      "expected": "Acesso segue o perfil e a propriedade do registro; entradas inválidas são recusadas, marcação não executa e senha não fica em texto puro. HTTPS presente nas rotas avaliadas. ONF05."
+    },
+    {
+      "id": "TNF06",
+      "title": "Correção e exclusão de dados",
+      "priority": "Alta",
+      "pre": "Procedimento de privacidade e campos necessários definidos para homologação.",
+      "data": "Conta fictícia AL02, com dados de contato e registros relacionados.",
+      "steps": [
+        "Conferir campos coletados contra a finalidade aprovada; corrigir um dado e reconsultar.",
+        "Solicitar exclusão pelo procedimento definido e verificar o tratamento dos vínculos e acessos."
+      ],
+      "expected": "Correção persiste; exclusão ou retenção justificada segue o procedimento registrado, sem exposição a outro usuário ou registros órfãos. Este teste funcional não representa auditoria jurídica. ONF06."
+    },
+    {
+      "id": "TNF07",
+      "title": "Compatibilidade entre navegadores",
+      "priority": "Média",
+      "pre": "Mesma versão e massa restaurada entre execuções.",
+      "data": "Chrome, Edge, Firefox e Safari estáveis disponíveis na homologação; registrar versões e sistemas.",
+      "steps": [
+        "Executar os fluxos de sucesso de UC01 a UC08 em cada navegador.",
+        "Comparar navegação, formulários, feedback, resultados e persistência."
+      ],
+      "expected": "Todos os percursos têm o mesmo resultado funcional e controles utilizáveis, sem erros específicos que impeçam a execução. ONF07."
+    },
+    {
+      "id": "TNF08",
+      "title": "Consistência de vagas e reservas",
+      "priority": "Alta",
+      "pre": "Ambiente integrado com observação de transações e massa restaurável.",
+      "data": "CT04-01, CT04-04, CT04-06, CT04-09 e CT04-10.",
+      "steps": [
+        "Executar a sequência indicada, restaurando a massa de cada caso.",
+        "Conferir reservas ativas, capacidade, vagas e mensagens após cada operação."
+      ],
+      "expected": "Ocupação entre zero e capacidade; vagas iguais à capacidade menos reservas ativas; no máximo uma reserva ativa por aluno e aula. Nenhum sucesso antes da gravação. ONF08."
+    }
+  ]
+}
