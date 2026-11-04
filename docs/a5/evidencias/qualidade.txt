@@ -1,0 +1,14 @@
+04/11/2026 — Node.js 24.22.1 — macOS
+ESLint . --max-warnings=0: código de saída 0
+TypeScript tsc --noEmit: código de saída 0
+Next build --webpack: código de saída 0
+
+HTTP (sete verificações):
+Origem local + operação ausente: 400
+Origem externa: 403
+Tipo text/plain: 415
+JSON inválido: 400
+Array JSON: 400
+Corpo maior que 8 KB: 413
+Nome vazio na matrícula: 422
+Todos os códigos observados coincidiram com os esperados.

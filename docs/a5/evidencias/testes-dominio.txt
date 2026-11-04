@@ -1,0 +1,36 @@
+✔ catálogo inicial tem planos, horários futuros e aula lotada (1.701792ms)
+✔ matrícula persiste protocolo e impede incompatibilidade (1.1385ms)
+✔ matrícula rejeita sem aceite sem criar registro (0.404083ms)
+✔ matrícula rejeita sem nome sem criar registro (0.354542ms)
+✔ matrícula rejeita e-mail inválido sem criar registro (0.505834ms)
+✔ matrícula rejeita plano inexistente sem criar registro (0.364458ms)
+✔ plano desativado não aceita matrícula (0.31275ms)
+✔ reserva e treino exigem matrícula (0.512ms)
+✔ reserva disponível grava uma vaga e rejeita duplicação (0.58825ms)
+✔ lotação e conflito não alteram reservas (0.883708ms)
+✔ aulas consecutivas sem sobreposição são permitidas (0.6465ms)
+✔ aula inexistente e aula iniciada são rejeitadas (0.382375ms)
+✔ cancelamento no limite de 2h com diferença 1ms (0.59475ms)
+✔ cancelamento no limite de 2h com diferença 0ms (0.462584ms)
+✔ cancelamento no limite de 2h com diferença -1ms (0.484083ms)
+✔ cancelamento não remove reserva de outro aluno (0.434708ms)
+✔ gravação do treino mantém carga realizada e não altera prescrição (0.62975ms)
+✔ carga inválida -1 não produz histórico (0.352334ms)
+✔ carga inválida 501 não produz histórico (0.283875ms)
+✔ carga inválida NaN não produz histórico (0.28175ms)
+✔ carga inválida Infinity não produz histórico (0.277208ms)
+✔ carga inválida 20 não produz histórico (0.275541ms)
+✔ carga no limite 0 é aceita (0.317042ms)
+✔ carga no limite 500 é aceita (0.294541ms)
+✔ exercícios ausentes, desconhecidos e repetidos são rejeitados (0.431542ms)
+✔ falha na persistência desfaz transação e permite recuperação (0.684584ms)
+✔ reabrir o arquivo mantém matrícula, agenda, reserva e treino (7.395917ms)
+✔ dois processos concorrentes disputam a última vaga sem exceder capacidade (69.751417ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 241.556042
