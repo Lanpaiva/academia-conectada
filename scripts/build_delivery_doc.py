@@ -152,6 +152,17 @@ def arrow(
     draw.polygon(points, fill=fill)
 
 
+def routed_arrow(
+    draw: ImageDraw.ImageDraw,
+    points: list[tuple[int, int]],
+    fill: str = "#485260",
+    width: int = 3,
+) -> None:
+    for start, end in zip(points, points[1:-1]):
+        draw.line([start, end], fill=fill, width=width)
+    arrow(draw, points[-2], points[-1], fill, width)
+
+
 def draw_button(
     draw: ImageDraw.ImageDraw,
     box: tuple[int, int, int, int],
@@ -279,26 +290,27 @@ def prototype_management() -> Path:
 
 
 def use_case_diagram() -> Path:
-    img = Image.new("RGB", (1600, 1050), "white")
+    img = Image.new("RGB", (1600, 1080), "white")
     draw = ImageDraw.Draw(img)
     draw.text((480, 44), "Diagrama geral de casos de uso", font=font(42, True), fill=INK)
-    rounded_box(draw, (360, 140, 1240, 900), "#fbfcfb", "#4b5563", radius=4, width=3)
-    draw.text((390, 172), "Sistema Academia Conectada", font=font(24, True), fill=INK)
+    system_box = (310, 145, 1290, 925)
+    rounded_box(draw, system_box, "#fbfcfb", "#4b5563", radius=4, width=3)
+    draw.text((340, 178), "Sistema Academia Conectada", font=font(24, True), fill=INK)
     use_cases = [
-        ("UC01\nCadastrar-se e entrar", 450, 260),
-        ("UC02\nConsultar planos e modalidades", 820, 260),
-        ("UC03\nSolicitar matrícula", 450, 390),
-        ("UC04\nAgendar ou cancelar aula", 820, 390),
-        ("UC05\nConsultar plano de treino", 450, 520),
-        ("UC06\nRegistrar treino e evolução", 820, 520),
-        ("UC07\nGerenciar treinos de alunos", 450, 650),
-        ("UC08\nAdministrar cadastros, planos e aulas", 820, 650),
+        ("UC01\nCadastrar-se e entrar", 405, 245),
+        ("UC02\nConsultar planos e modalidades", 825, 245),
+        ("UC03\nSolicitar matrícula", 405, 395),
+        ("UC04\nAgendar ou cancelar aula", 825, 395),
+        ("UC05\nConsultar plano de treino", 405, 545),
+        ("UC06\nRegistrar treino e evolução", 825, 545),
+        ("UC07\nGerenciar treinos de alunos", 405, 695),
+        ("UC08\nAdministrar cadastros, planos e aulas", 825, 695),
     ]
     centers: dict[str, tuple[int, int]] = {}
+    boxes: dict[str, tuple[int, int, int, int]] = {}
     for label, x, y in use_cases:
-        draw.ellipse((x, y, x + 300, y + 70), outline="#475569", width=3, fill="white")
-        centered_text(draw, (x + 10, y + 4, x + 290, y + 66), label, font(18, True), INK)
         centers[label.split("\n")[0]] = (x + 150, y + 35)
+        boxes[label.split("\n")[0]] = (x, y, x + 300, y + 70)
 
     def actor(x: int, y: int, label: str, color: str) -> tuple[int, int]:
         draw.ellipse((x - 18, y - 54, x + 18, y - 18), outline=color, width=4)
@@ -310,29 +322,46 @@ def use_case_diagram() -> Path:
         draw.text((x - w // 2, y + 118), label, font=font(20, True), fill=color)
         return (x, y + 22)
 
-    visitante = actor(205, 315, "Visitante", BLUE)
-    aluno = actor(205, 610, "Aluno", GREEN)
-    instrutor = actor(1395, 520, "Instrutor", "#a64b19")
-    admin = actor(1395, 740, "Administrador", BRAND)
+    anchors = {
+        "Visitante": (184, 312),
+        "Aluno": (184, 668),
+        "Instrutor": (1416, 538),
+        "Administrador": (1416, 758),
+    }
+
+    def case_port(uc: str, side: str) -> tuple[int, int]:
+        x1, y1, x2, y2 = boxes[uc]
+        y = (y1 + y2) // 2
+        return (x1, y) if side == "left" else (x2, y)
 
     links = [
-        (visitante, centers["UC01"], BLUE),
-        (visitante, centers["UC02"], BLUE),
-        (aluno, centers["UC01"], GREEN),
-        (aluno, centers["UC02"], GREEN),
-        (aluno, centers["UC03"], GREEN),
-        (aluno, centers["UC04"], GREEN),
-        (aluno, centers["UC05"], GREEN),
-        (aluno, centers["UC06"], GREEN),
-        (instrutor, centers["UC05"], "#a64b19"),
-        (instrutor, centers["UC07"], "#a64b19"),
-        (admin, centers["UC01"], BRAND),
-        (admin, centers["UC02"], BRAND),
-        (admin, centers["UC08"], BRAND),
+        ("Visitante", "UC01", "left", BLUE),
+        ("Visitante", "UC02", "left", BLUE),
+        ("Aluno", "UC01", "left", GREEN),
+        ("Aluno", "UC02", "left", GREEN),
+        ("Aluno", "UC03", "left", GREEN),
+        ("Aluno", "UC04", "left", GREEN),
+        ("Aluno", "UC05", "left", GREEN),
+        ("Aluno", "UC06", "left", GREEN),
+        ("Instrutor", "UC05", "right", "#a64b19"),
+        ("Instrutor", "UC07", "right", "#a64b19"),
+        ("Administrador", "UC01", "right", BRAND),
+        ("Administrador", "UC02", "right", BRAND),
+        ("Administrador", "UC08", "right", BRAND),
     ]
-    for start, end, color in links:
+    for actor_name, uc, side, color in links:
+        start = anchors[actor_name]
+        end = case_port(uc, side)
         draw.line([start, end], fill=color, width=2)
-    draw.text((390, 858), "Associação: o ator participa ou inicia o caso de uso.", font=font(18), fill=MUTED)
+
+    for label, x, y in use_cases:
+        draw.ellipse((x, y, x + 300, y + 70), outline="#475569", width=3, fill="white")
+        centered_text(draw, (x + 10, y + 4, x + 290, y + 66), label, font(18, True), INK)
+    actor(140, 290, "Visitante", BLUE)
+    actor(140, 646, "Aluno", GREEN)
+    actor(1460, 516, "Instrutor", "#a64b19")
+    actor(1460, 736, "Administrador", BRAND)
+    draw.text((340, 878), "Associação: o ator participa ou inicia o caso de uso.", font=font(18), fill=MUTED)
     return save_image(img, "figura-01-casos-de-uso.png")
 
 
@@ -342,10 +371,10 @@ def domain_model() -> Path:
     draw.text((520, 48), "Modelo de domínio", font=font(42, True), fill=INK)
 
     groups = [
-        ("Acesso e perfis", (70, 135, 1530, 320), "#f8fbff"),
-        ("Contratação e aulas", (70, 360, 760, 740), "#fffaf0"),
-        ("Treinos e evolução", (840, 360, 1530, 740), "#f6fbf7"),
-        ("Relacionamentos principais", (70, 780, 1530, 940), "#fbfcfb"),
+        ("Acesso e perfis", (70, 125, 1530, 365), "#f8fbff"),
+        ("Contratação e aulas", (70, 405, 760, 825), "#fffaf0"),
+        ("Treinos e evolução", (840, 405, 1530, 825), "#f6fbf7"),
+        ("Relacionamentos principais", (70, 845, 1530, 975), "#fbfcfb"),
     ]
     for title, box, fill in groups:
         rounded_box(draw, box, fill, "#d5dde4", radius=16, width=2)
@@ -356,34 +385,34 @@ def domain_model() -> Path:
         centered_text(draw, box, label, font(21, True), INK)
         return ((box[0] + box[2]) // 2, (box[1] + box[3]) // 2)
 
-    usuario = entity("Usuário", (660, 198, 940, 260), BRAND)
-    aluno = entity("Aluno", (210, 245, 450, 300), GREEN)
-    instrutor = entity("Instrutor", (680, 245, 920, 300), TEAL)
-    admin = entity("Administrador", (1130, 245, 1410, 300), BLUE)
-    draw.line((usuario[0], 260, usuario[0], 292), fill="#66717d", width=3)
-    draw.line((330, 292, 1270, 292), fill="#66717d", width=3)
+    usuario = entity("Usuário", (650, 180, 950, 240), BRAND)
+    aluno = entity("Aluno", (170, 285, 450, 345), GREEN)
+    instrutor = entity("Instrutor", (660, 285, 940, 345), TEAL)
+    admin = entity("Administrador", (1150, 285, 1430, 345), BLUE)
+    draw.line((usuario[0], 240, usuario[0], 260), fill="#66717d", width=3)
+    draw.line((310, 260, 1290, 260), fill="#66717d", width=3)
     for point in [aluno, instrutor, admin]:
-        arrow(draw, (point[0], 292), (point[0], 302), "#66717d", 3)
+        routed_arrow(draw, [(point[0], 260), (point[0], 285)], "#66717d", 3)
 
-    plano = entity("Plano", (120, 445, 310, 505), BRAND)
-    matricula = entity("Matrícula", (390, 445, 610, 505), BRAND)
-    aluno_ref = entity("Aluno", (250, 640, 480, 700), GREEN)
-    aula = entity("Aula", (120, 555, 310, 615), TEAL)
-    reserva = entity("Reserva", (390, 555, 610, 615), TEAL)
-    arrow(draw, (320, 485), (385, 485), BRAND, 3)
-    arrow(draw, (500, 505), (430, 640), BRAND, 3)
-    arrow(draw, (320, 570), (385, 570), TEAL, 3)
-    arrow(draw, (500, 615), (430, 640), TEAL, 3)
+    plano = entity("Plano", (125, 475, 315, 535), BRAND)
+    matricula = entity("Matrícula", (450, 475, 660, 535), BRAND)
+    aluno_ref = entity("Aluno", (270, 735, 560, 795), GREEN)
+    aula = entity("Aula", (125, 610, 315, 670), TEAL)
+    reserva = entity("Reserva", (450, 610, 660, 670), TEAL)
+    arrow(draw, (315, 505), (450, 505), BRAND, 3)
+    routed_arrow(draw, [(660, 505), (710, 505), (710, 765), (560, 765)], BRAND, 3)
+    arrow(draw, (315, 640), (450, 640), TEAL, 3)
+    routed_arrow(draw, [(555, 670), (555, 720), (415, 720), (415, 735)], TEAL, 3)
 
-    instrutor_ref = entity("Instrutor", (900, 455, 1110, 515), TEAL)
-    plano_treino = entity("Plano de treino", (1180, 455, 1460, 515), GREEN)
-    sessao = entity("Sessão de treino", (900, 575, 1160, 635), GREEN)
-    exercicio = entity("Exercício", (1225, 575, 1460, 635), GREEN)
-    registro = entity("Registro de evolução", (1030, 660, 1340, 720), BLUE)
-    arrow(draw, (1110, 485), (1180, 485), TEAL, 3)
-    arrow(draw, (1320, 515), (1030, 575), GREEN, 3)
-    arrow(draw, (1160, 605), (1225, 605), GREEN, 3)
-    arrow(draw, (1030, 690), (955, 635), BLUE, 3)
+    instrutor_ref = entity("Instrutor", (900, 475, 1110, 535), TEAL)
+    plano_treino = entity("Plano de treino", (1190, 475, 1460, 535), GREEN)
+    sessao = entity("Sessão de treino", (890, 610, 1165, 670), GREEN)
+    exercicio = entity("Exercício", (1220, 610, 1465, 670), GREEN)
+    registro = entity("Registro de evolução", (1000, 735, 1350, 795), BLUE)
+    arrow(draw, (1110, 505), (1190, 505), TEAL, 3)
+    routed_arrow(draw, [(1325, 535), (1325, 575), (1028, 575), (1028, 610)], GREEN, 3)
+    arrow(draw, (1165, 640), (1220, 640), GREEN, 3)
+    routed_arrow(draw, [(1175, 735), (1175, 705), (1045, 705), (1045, 670)], BLUE, 3)
 
     relations = [
         "1. Usuário especializa Aluno, Instrutor ou Administrador.",
@@ -392,11 +421,11 @@ def domain_model() -> Path:
         "4. Aluno registra evolução vinculada ao treino e ao histórico de execução.",
     ]
     x = 110
-    y = 838
+    y = 910
     for index, relation in enumerate(relations):
         current_x = x if index < 2 else 830
-        current_y = y + (index % 2) * 48
-        draw_wrapped(draw, (current_x, current_y), relation, font(21, True), INK, 640, 6)
+        current_y = y + (index % 2) * 32
+        draw_wrapped(draw, (current_x, current_y), relation, font(17, True), INK, 650, 4)
     return save_image(img, "figura-05-modelo-dominio.png")
 
 
@@ -417,34 +446,34 @@ def uml_class(draw: ImageDraw.ImageDraw, box: tuple[int, int, int, int], title: 
 
 
 def class_diagram() -> Path:
-    img = Image.new("RGB", (1700, 1150), "white")
+    img = Image.new("RGB", (1800, 1260), "white")
     draw = ImageDraw.Draw(img)
-    draw.text((555, 42), "Diagrama de classes de projeto", font=font(42, True), fill=INK)
+    draw.text((610, 42), "Diagrama de classes de projeto", font=font(42, True), fill=INK)
     classes = [
-        ((70, 140, 380, 320), "Usuario", ["+ id: string", "+ nome: string", "+ email: string"], ["+ autenticar()", "+ alterarPerfil()"]),
-        ((70, 385, 380, 565), "Aluno", ["+ matriculaAtiva: boolean", "+ dataNascimento: Date"], ["+ solicitarMatricula()", "+ registrarTreino()"]),
-        ((70, 615, 380, 795), "Instrutor", ["+ cref: string", "+ especialidade: string"], ["+ criarPlanoTreino()", "+ revisarPlano()"]),
-        ((70, 845, 380, 1025), "Administrador", ["+ nivelAcesso: string"], ["+ manterCadastro()", "+ publicarAgenda()"]),
-        ((510, 140, 840, 330), "Plano", ["+ nome: string", "+ valorMensal: decimal", "+ ativo: boolean"], ["+ ativar()", "+ desativar()"]),
-        ((510, 385, 840, 575), "Matricula", ["+ protocolo: string", "+ status: string", "+ criadaEm: Date"], ["+ confirmar()", "+ encerrar()"]),
-        ((510, 630, 840, 820), "Aula", ["+ dataHora: Date", "+ capacidade: number", "+ modalidade: string"], ["+ reservarVaga()", "+ cancelarReserva()"]),
-        ((510, 875, 840, 1065), "Reserva", ["+ status: string", "+ criadaEm: Date"], ["+ confirmar()", "+ cancelar()"]),
-        ((970, 140, 1315, 350), "PlanoTreino", ["+ objetivo: string", "+ vigenciaInicio: Date", "+ vigenciaFim: Date"], ["+ publicar()", "+ criarNovaVersao()"]),
-        ((970, 425, 1315, 615), "Exercicio", ["+ nome: string", "+ grupoMuscular: string"], ["+ atualizarOrientacao()"]),
-        ((970, 690, 1315, 900), "RegistroEvolucao", ["+ peso: decimal", "+ observacoes: string"], ["+ calcularHistorico()", "+ anexarMedida()"]),
+        ((95, 155, 425, 345), "Usuario", ["+ id: string", "+ nome: string", "+ email: string"], ["+ autenticar()", "+ alterarPerfil()"]),
+        ((95, 425, 425, 615), "Aluno", ["+ matriculaAtiva: boolean", "+ dataNascimento: Date"], ["+ solicitarMatricula()", "+ registrarTreino()"]),
+        ((95, 695, 425, 885), "Instrutor", ["+ cref: string", "+ especialidade: string"], ["+ criarPlanoTreino()", "+ revisarPlano()"]),
+        ((95, 965, 425, 1155), "Administrador", ["+ nivelAcesso: string"], ["+ manterCadastro()", "+ publicarAgenda()"]),
+        ((535, 155, 875, 355), "Plano", ["+ nome: string", "+ valorMensal: decimal", "+ ativo: boolean"], ["+ ativar()", "+ desativar()"]),
+        ((535, 425, 875, 625), "Matricula", ["+ protocolo: string", "+ status: string", "+ criadaEm: Date"], ["+ confirmar()", "+ encerrar()"]),
+        ((535, 695, 875, 895), "Aula", ["+ dataHora: Date", "+ capacidade: number", "+ modalidade: string"], ["+ reservarVaga()", "+ cancelarReserva()"]),
+        ((535, 965, 875, 1165), "Reserva", ["+ status: string", "+ criadaEm: Date"], ["+ confirmar()", "+ cancelar()"]),
+        ((990, 155, 1350, 375), "PlanoTreino", ["+ objetivo: string", "+ vigenciaInicio: Date", "+ vigenciaFim: Date"], ["+ publicar()", "+ criarNovaVersao()"]),
+        ((990, 500, 1350, 700), "Exercicio", ["+ nome: string", "+ grupoMuscular: string"], ["+ atualizarOrientacao()"]),
+        ((990, 840, 1350, 1060), "RegistroEvolucao", ["+ peso: decimal", "+ observacoes: string"], ["+ calcularHistorico()", "+ anexarMedida()"]),
     ]
     for args in classes:
         uml_class(draw, *args)
 
-    arrow(draw, (225, 320), (225, 385), "#67707d", 3)
-    arrow(draw, (225, 320), (225, 615), "#67707d", 3)
-    arrow(draw, (225, 320), (225, 845), "#67707d", 3)
-    draw.text((250, 350), "herança", font=font(16, True), fill=MUTED)
-    draw.text((250, 580), "herança", font=font(16, True), fill=MUTED)
-    draw.text((250, 810), "herança", font=font(16, True), fill=MUTED)
+    draw.line((55, 250, 55, 1060), fill="#67707d", width=3)
+    draw.line((55, 250, 95, 250), fill="#67707d", width=3)
+    for y in [520, 790, 1060]:
+        arrow(draw, (55, y), (95, y), "#67707d", 3)
+    draw.rectangle((18, 355, 92, 385), fill="white")
+    draw.text((24, 360), "herança", font=font(16, True), fill=MUTED)
 
-    rounded_box(draw, (1375, 140, 1635, 900), "#fbfcfb", "#d5dde4", radius=16, width=2)
-    draw.text((1405, 178), "Associações", font=font(24, True), fill=INK)
+    rounded_box(draw, (1420, 155, 1745, 825), "#fbfcfb", "#d5dde4", radius=16, width=2)
+    draw.text((1452, 195), "Associações", font=font(24, True), fill=INK)
     association_lines = [
         "Aluno 1..* Matrícula",
         "Matrícula 1 Plano",
@@ -454,20 +483,20 @@ def class_diagram() -> Path:
         "PlanoTreino 1..* Exercício",
         "Aluno 0..* RegistroEvolucao",
     ]
-    y = 230
+    y = 250
     for line in association_lines:
-        draw_wrapped(draw, (1405, y), line, font(19, True), "#3d4652", 200, 6)
-        y += 72
+        draw_wrapped(draw, (1452, y), line, font(19, True), "#3d4652", 250, 6)
+        y += 78
 
-    rounded_box(draw, (955, 950, 1635, 1075), "#f6f9fc", "#d5dde4", radius=16, width=2)
-    draw.text((990, 982), "Serviços previstos", font=font(22, True), fill=INK)
+    rounded_box(draw, (1420, 875, 1745, 1125), "#f6f9fc", "#d5dde4", radius=16, width=2)
+    draw.text((1452, 915), "Serviços previstos", font=font(22, True), fill=INK)
     draw_wrapped(
         draw,
-        (990, 1020),
+        (1452, 960),
         "AuthService, MatriculaService, AgendaService, TreinoService e AdminService coordenam regras de negócio e repositórios.",
         font(18, True),
         MUTED,
-        590,
+        250,
         5,
     )
     return save_image(img, "figura-06-diagrama-classes.png")

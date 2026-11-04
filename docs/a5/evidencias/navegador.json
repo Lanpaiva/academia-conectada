@@ -1,0 +1,19 @@
+{
+  "resultado": "aprovado",
+  "fluxos": [
+    "matricula",
+    "reserva",
+    "conflito",
+    "treino",
+    "recarga com persistencia",
+    "cancelamento"
+  ],
+  "largurasSemOverflow": [
+    360,
+    768,
+    1280,
+    1920
+  ],
+  "errosJavaScript": [],
+  "historico": 1
+}

@@ -12,3 +12,7 @@ __pycache__/
 *.pyc
 docs/entrega-2/render*
 tmp
+data/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
