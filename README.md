@@ -1,457 +1,202 @@
 # Academia Conectada
 
-### Sistema web de gerenciamento de academia
+Sistema web acadêmico de gestão de academia — Análise e Desenvolvimento de Sistemas, Universidade Presbiteriana Mackenzie.
 
-> Projeto acadêmico do curso de Análise e Desenvolvimento de Sistemas da Universidade Presbiteriana Mackenzie.
+## Entrega A5 e versões
 
----
+- [Especificação completa revisada em PDF](docs/a5/academia-conectada-a5-especificacao.pdf) e [DOCX editável](docs/a5/academia-conectada-a5-especificacao.docx).
+- [Tag v1 — Iteração 1](https://github.com/Lanpaiva/academia-conectada/tree/v1): interface demonstrativa original e planos A4.
+- [Tag v2 — Iteração 2](https://github.com/Lanpaiva/academia-conectada/tree/v2): matrícula, reservas e treinos persistidos no servidor local.
+- [Branch iteracao2 preservada](https://github.com/Lanpaiva/academia-conectada/tree/iteracao2) e [branch master](https://github.com/Lanpaiva/academia-conectada/tree/master) com o merge do exercício.
+- [Planos de teste A4](tests/manual/README.md) e [evidências A5](docs/a5/validacao.md).
+- [Quadro do projeto](https://github.com/users/Lanpaiva/projects/2).
 
-## Links do projeto
-
-| Item | Endereço |
-| --- | --- |
-| Repositório | [github.com/Lanpaiva/academia-conectada](https://github.com/Lanpaiva/academia-conectada) |
-| Quadro de acompanhamento | [GitHub Projects - Academia Conectada](https://github.com/users/Lanpaiva/projects/2) |
-| Aplicação publicada | [academia-conectada.vercel.app](https://academia-conectada.vercel.app) |
-| Documentação completa em ABNT | [PDF](docs/entrega-2/academia-conectada-entrega-2.pdf) · [DOCX](docs/entrega-2/academia-conectada-entrega-2.docx) |
-| Atividades A4 — planos de teste | [Cenários e procedimentos](tests/manual/README.md) · [Registro de execução](tests/manual/registro-execucao.md) |
-
----
+O repositório usa `main` como branch padrão histórica. Para cumprir literalmente o enunciado A5, foi criada `master` a partir de `origin/main`, consolidada a documentação A4 e criada a tag `v1`. A branch `iteracao2` nasceu de `master`. O commit `02fc160` modificou exatamente dois arquivos (`README.md` e `src/app/layout.tsx`) para o exercício. A evolução funcional foi realizada nessa mesma branch e incorporada a `master` por merge com dois pais, mantendo `iteracao2`. A tag `v2` identifica o resultado final.
 
 ## Integrantes
 
 | Nº | Nome |
-|:---:|---|
+| --- | --- |
 | 1 | Alan Araujo Paiva |
 | 2 | Ian Ávila Guerra |
 | 3 | Júlio de Moura Stelzer |
 | 4 | Matheus Araujo dos Santos Nunes |
 | 5 | Luiz Felipe Mantovani |
 
+## O que funciona na Iteração 2
 
----
+- Consulta de três planos e quatro aulas com horários e disponibilidade.
+- Matrícula com nome, e-mail, aceite dos termos, protocolo único e gravação no banco.
+- Ativação imediata da matrícula acadêmica, sem cobrança ou integração financeira.
+- Reserva com validação de matrícula, capacidade, duplicidade, horário iniciado e conflito entre aulas.
+- Cancelamento até duas horas antes da aula, incluindo o limite exato; repetição não libera vagas adicionais.
+- Consulta de treino fixo, seleção de exercícios, carga realizada e observação.
+- Histórico persistido com prevenção de duplicação do mesmo envio, preservando a carga prescrita.
+- Mensagens de erro e confirmação, consulta atualizada e manutenção dos dados após recarregar a página ou reiniciar o servidor.
 
-## Sobre o projeto
+**Escopo acadêmico:** a interface utiliza um único aluno de demonstração (`AL01`), compartilhado por quem acessa a instância. Não há login, isolamento por usuário, recuperação de senha, pagamento, gestão de instrutores ou CRUD administrativo nesta versão. Use exclusivamente dados fictícios e execute em `127.0.0.1`. Autenticação real, perfis e demais casos de uso permanecem no escopo futuro da especificação.
 
-O **Academia Conectada** será uma aplicação web para centralizar as principais atividades de alunos, instrutores e administradores de uma academia.
+A [interface anteriormente publicada na Vercel](https://academia-conectada.vercel.app) corresponde à demonstração da Iteração 1. A entrega `v2` é validada localmente com disco persistente. O arquivo SQLite local não constitui uma solução persistente para funções serverless da Vercel. A migração planejada para PostgreSQL/Neon, autenticação e implantação integrada é uma etapa posterior.
 
-O sistema permitirá controlar matrículas, planos, aulas, reservas, treinos, exercícios e a evolução dos alunos.
+## Tecnologias efetivamente utilizadas
 
----
-
-## Funcionalidades planejadas
-
-- Cadastro e autenticação de usuários;
-- Controle de acesso por perfil;
-- Perfis de aluno, instrutor e administrador;
-- Apresentação de modalidades, planos e horários;
-- Matrícula de alunos;
-- Agenda de aulas;
-- Reserva e cancelamento de aulas;
-- Controle da capacidade das turmas;
-- Cadastro de exercícios;
-- Criação e atribuição de planos de treino;
-- Registro de séries, repetições e cargas;
-- Registro de medidas;
-- Histórico e gráficos de evolução;
-- Administração de alunos, planos, aulas e instrutores;
-- Interface responsiva para computadores e celulares;
-- Recursos de acessibilidade.
-
----
-
-## Estado atual
-
-O projeto possui uma primeira interface web executável publicada na Vercel.
-
-A versão atual apresenta uma experiência demonstrativa para visitantes, alunos, instrutores e administradores, com fluxos de matrícula, reserva de aulas, consulta e registro de treino, acompanhamento de evolução e manutenção administrativa.
-
----
-
-## Stack tecnológica
-
-| Categoria | Tecnologia |
+| Camada | Implementação |
 | --- | --- |
-| Linguagem | TypeScript |
-| Framework | Next.js com App Router |
-| Interface | React |
-| Estilização | Tailwind CSS |
-| Backend | Route Handlers e Server Actions |
-| Banco de dados | PostgreSQL |
-| Hospedagem do banco | Neon Free |
-| ORM | Prisma |
-| Autenticação | Better Auth |
-| Formulários | React Hook Form |
-| Validação | Zod |
-| Gráficos | Recharts |
-| Datas e horários | date-fns |
-| Ícones | Lucide React |
-| Testes unitários | Vitest e Testing Library |
-| Testes no navegador | Playwright |
-| Versionamento | Git e GitHub |
-| Publicação | Vercel Hobby |
+| Execução | Node.js 24 LTS, versão 24.13.0 ou superior da série 24 |
+| Interface | Next.js App Router, React, TypeScript, Tailwind CSS, Lucide |
+| Serviço HTTP | Route Handler `GET/POST /api/academia` no runtime Node |
+| Persistência | SQLite via `node:sqlite`, transações e restrições de integridade |
+| Testes | Runner nativo `node:test`, 28 testes de serviço/persistência |
+| Qualidade | ESLint, TypeScript e build de produção |
 
----
+As versões exatas das bibliotecas estão registradas em `package-lock.json`. Use `npm ci`. PostgreSQL, Prisma, Better Auth e serviços externos não são necessários para executar a Iteração 2.
 
-## Pré-requisitos
+## Instalação no macOS e no Windows
 
-Antes de baixar o projeto, instale:
+### 1. Pré-requisitos
 
-| Programa | Requisito |
-| --- | --- |
-| Git | Versão atual |
-| Node.js | Versão 24 ou superior |
-| npm | Instalado junto com o Node.js |
-| Editor | Visual Studio Code recomendado |
+Instale Git e Node.js 24 LTS, versão 24.13.0 ou superior da série 24, usando os instaladores oficiais. O npm acompanha o Node.js. No Windows, feche e abra o PowerShell depois da instalação.
 
-Para verificar as instalações:
+Confira no Terminal do macOS ou no PowerShell do Windows:
 
-```bash
+```sh
 git --version
 node --version
 npm --version
 ```
 
----
+O comando Node deve mostrar `v24.x.x`. Se houver outro Node no PATH, selecione a instalação da série 24 antes de continuar.
 
-## Instalação no macOS
+### 2. Obter a versão entregue
 
-### Instalar com Homebrew
+Os mesmos comandos funcionam no Terminal e no PowerShell:
 
-```bash
-brew update
-brew install git
-brew install node
-```
-
-Verifique as instalações:
-
-```bash
-git --version
-node --version
-npm --version
-```
-
-Clone o repositório:
-
-```bash
-git clone https://github.com/Lanpaiva/academia-conectada.git
+```sh
+git clone --branch v2 https://github.com/Lanpaiva/academia-conectada.git
 cd academia-conectada
+npm ci
 ```
 
-Instale as bibliotecas:
+O clone de uma tag fica em estado `detached HEAD`, adequado para executar exatamente a entrega. Para desenvolver a partir dela, crie uma branch com `git switch -c minha-alteracao`.
 
-```bash
-npm install
-npx playwright install
+### 3. Configuração do banco
+
+Nenhuma credencial ou variável de ambiente é obrigatória. Na primeira consulta, o servidor cria `data/academia.sqlite`, suas tabelas e os dados fictícios iniciais. Não é necessário instalar um servidor de banco nem executar migrações manuais.
+
+Opcionalmente, copie o arquivo de exemplo para mudar o caminho:
+
+macOS:
+
+```sh
+cp .env.example .env.local
 ```
 
-Execute o projeto:
+Windows PowerShell:
 
-```bash
+```powershell
+Copy-Item .env.example .env.local
+```
+
+Edite `ACADEMIA_DB_PATH` em `.env.local` para um caminho local gravável. Caminhos relativos são resolvidos a partir da raiz do projeto. Reinicie o servidor depois da alteração. Não use armazenamento de rede para compartilhar o arquivo SQLite entre máquinas.
+
+### 4. Executar em desenvolvimento
+
+```sh
 npm run dev
 ```
 
-Acesse:
+Abra **http://127.0.0.1:3000**. Os scripts de desenvolvimento e produção escutam somente no endereço local. Para encerrar, pressione `Ctrl+C` no terminal.
 
-```text
-http://localhost:3000
+Se a porta estiver ocupada:
+
+```sh
+npm run dev -- --port 3001
 ```
 
----
+Nesse caso, abra http://127.0.0.1:3001. Consulte no terminal a porta efetivamente usada.
 
-## Instalação no Windows
+### 5. Executar a compilação de produção local
 
-Abra o **PowerShell** ou o **Windows Terminal**.
+Pare o servidor de desenvolvimento antes de executar:
 
-### Instalar com WinGet
-
-```powershell
-winget install --id Git.Git --exact
-winget install --id OpenJS.NodeJS.LTS --exact
+```sh
+npm run build
+npm start
 ```
 
-Feche e abra novamente o terminal.
-
-Verifique as instalações:
-
-```powershell
-git --version
-node --version
-npm --version
-```
-
-Clone o repositório:
-
-```powershell
-git clone https://github.com/Lanpaiva/academia-conectada.git
-Set-Location academia-conectada
-```
-
-Instale as bibliotecas:
-
-```powershell
-npm install
-npx playwright install
-```
-
-Execute o projeto:
-
-```powershell
-npm run dev
-```
-
-Acesse:
-
-```text
-http://localhost:3000
-```
-
----
-
-## Comandos para adicionar as bibliotecas
-
-Os comandos desta seção serão executados durante a configuração inicial do projeto.
-
-Depois que as dependências estiverem registradas no `package.json`, os outros integrantes precisarão executar somente:
-
-```bash
-npm install
-```
-
-### Next.js, React e TypeScript
-
-```bash
-npm install next@latest react@latest react-dom@latest
-
-npm install -D typescript
-npm install -D @types/node @types/react @types/react-dom
-```
-
-### Tailwind CSS
-
-```bash
-npm install -D tailwindcss @tailwindcss/postcss
-```
-
-### PostgreSQL e Prisma
-
-```bash
-npm install @prisma/client @prisma/adapter-pg pg
-
-npm install -D prisma @types/pg
-```
-
-Inicializar o Prisma com PostgreSQL:
-
-```bash
-npx prisma init --datasource-provider postgresql
-```
-
-### Autenticação
-
-```bash
-npm install better-auth
-```
-
-### Formulários e validação
-
-```bash
-npm install react-hook-form @hookform/resolvers zod
-```
-
-### Gráficos, datas e ícones
-
-```bash
-npm install recharts date-fns lucide-react
-```
-
-### Padronização do código
-
-```bash
-npm install -D eslint eslint-config-next
-npm install -D prettier prettier-plugin-tailwindcss
-```
-
-### Testes unitários e de componentes
-
-```bash
-npm install -D vitest @vitejs/plugin-react jsdom
-
-npm install -D @testing-library/react
-npm install -D @testing-library/jest-dom
-npm install -D @testing-library/user-event
-```
-
-### Testes no navegador
-
-```bash
-npm install -D @playwright/test
-npx playwright install
-```
-
----
-
-## Variáveis de ambiente
-
-As credenciais e conexões não serão enviadas ao GitHub.
-
-Quando o arquivo `.env.example` estiver disponível, crie uma cópia local.
-
-### macOS ou Git Bash
-
-```bash
-cp .env.example .env
-```
-
-### Windows PowerShell
-
-```powershell
-Copy-Item .env.example .env
-```
-
-O arquivo deverá conter:
-
-```dotenv
-DATABASE_URL="endereco-do-banco-postgresql"
-BETTER_AUTH_SECRET="segredo-com-pelo-menos-32-caracteres"
-BETTER_AUTH_URL="http://localhost:3000"
-```
-
-> Nunca envie o arquivo `.env` ao GitHub.
-
----
-
-## Banco de dados
-
-Gerar o Prisma Client:
-
-```bash
-npx prisma generate
-```
-
-Criar ou atualizar as tabelas:
-
-```bash
-npx prisma migrate dev
-```
-
-Abrir a interface visual do banco:
-
-```bash
-npx prisma studio
-```
-
----
-
-## Execução do projeto
-
-Iniciar o ambiente de desenvolvimento:
-
-```bash
-npm run dev
-```
-
-A aplicação ficará disponível em:
-
-```text
-http://localhost:3000
-```
-
-Para interromper o servidor:
-
-```text
-Ctrl + C
-```
-
----
-
-## Testes e qualidade
-
-As atividades A4 Praticando e A4 Aplicando o conhecimento estão incorporadas às seções 12 e 13 da [documentação completa](docs/entrega-2/README.md). São 59 cenários funcionais para os oito casos de uso e oito verificações transversais, disponíveis também em [Markdown](tests/manual/README.md) e [JSON](tests/manual/cenarios-de-teste.json).
-
-Os cenários estão planejados e marcados como **Não executado**. Sua execução integrada depende dos serviços de autenticação e persistência previstos no projeto. O catálogo é um plano de testes, sem resultados de homologação ou automação implementada.
-
-Comandos disponíveis na versão atual:
-
-| Comando | Finalidade |
-| --- | --- |
-| `npm run lint` | Verificar problemas e padronização do código |
-| `npm run typecheck` | Verificar os tipos TypeScript |
-| `npm run build` | Validar a geração da aplicação para produção |
-
-Executar as verificações disponíveis:
-
-```bash
+Abra novamente http://127.0.0.1:3000. Essa execução usa o mesmo caminho de banco quando a configuração é mantida.
+
+## Roteiro de demonstração
+
+1. Abra a aplicação e confira os planos e a agenda.
+2. Selecione Conectado, mantenha nome/e-mail fictícios, aceite os termos e confirme a matrícula. Anote o protocolo.
+3. Reserve Bike indoor. Tente reservar Funcional: os horários se sobrepõem e o servidor deve recusar.
+4. Confira que Pilates está lotada. Alongamento começa com uma vaga.
+5. Marque Leg press, informe uma carga realizada (por exemplo, 35 kg), escreva uma observação e salve o treino.
+6. Recarregue a página: protocolo, reserva e histórico devem permanecer.
+7. Cancele Bike indoor dentro do prazo: a vaga deve ser liberada uma vez.
+8. Pare e reinicie o servidor: os registros devem permanecer no arquivo SQLite.
+
+Os horários são criados dois dias à frente na primeira inicialização, no fuso de São Paulo (UTC−3), e não mudam ao reiniciar. Após o início das aulas, novas reservas são bloqueadas. Para uma nova demonstração com datas futuras e dados zerados, pare o servidor e **renomeie a pasta `data` inteira para uma cópia de segurança** antes de iniciar novamente. Se configurou outro caminho, preserve também os arquivos auxiliares `-wal` e `-shm`. Os testes automatizados criam suas próprias bases temporárias e não alteram `data`.
+
+## Regras da versão 2
+
+- Uma matrícula por aluno; reenvio do mesmo plano mantém o protocolo, outro plano ativo é recusado.
+- Os dados enviados pelo navegador são validados novamente no servidor. Preços e capacidades vêm do banco.
+- Intervalos se sobrepõem quando `início A < fim B` e `fim A > início B`; aulas consecutivas são permitidas.
+- Cancelamento permitido com antecedência **maior ou igual a duas horas**.
+- Cargas numéricas entre **0 e 500 kg**, inclusive; limite técnico definido para a massa de homologação, sem recomendação de prática esportiva.
+- Observação até 500 caracteres; pelo menos um exercício válido, sem repetições no mesmo registro.
+- O mesmo identificador de envio e os mesmos dados não duplicam treino; o mesmo identificador com outros dados é recusado.
+- Reservas são realizadas dentro de transações `BEGIN IMMEDIATE`. A ocupação combina a massa fictícia inicial e as reservas efetivamente gravadas.
+
+## Testes e verificação
+
+```sh
+npm test
 npm run lint
 npm run typecheck
 npm run build
 ```
 
-Os comandos `npm run test` e `npm run test:e2e` serão adicionados quando as suítes automatizadas forem implementadas.
+`npm test` executa 28 testes em bases isoladas: matrícula, obrigatoriedade, indisponibilidade, duplicidade, conflito, lotação, cancelamento nos limites, histórico, cargas, rollback, reabertura do banco e dois workers concorrentes disputando a última vaga. Avisos de recurso experimental do `node:sqlite` não representam falhas; confira os totais de aprovação e o código de saída.
 
----
+A verificação pelo navegador contemplou matrícula → API → SQLite → reserva → conflito → treino → recarga → cancelamento e larguras de 360, 768, 1280 e 1920 px. Consulte [as evidências](docs/a5/validacao.md). Isso não comprova os cenários futuros de autenticação, autorização, privacidade, gestão e compatibilidade completa da A4. O catálogo A4 permanece como plano de homologação do sistema completo.
 
-## Fluxo de contribuição
+Para verificar o contrato HTTP com a aplicação já aberta em outro terminal, execute `node tests/http/check-http.mjs`. São sete verificações de entrada sem gravação de dados. A variável opcional `TEST_BASE_URL` permite usar outra porta.
 
-1. Escolha uma atividade no [quadro do projeto](https://github.com/users/Lanpaiva/projects/2);
-2. Mova a atividade para **In Progress**;
-3. Atualize a branch principal;
-4. Crie uma branch para a funcionalidade;
-5. Implemente e teste a alteração;
-6. Faça o commit;
-7. Envie a branch ao GitHub;
-8. Abra um Pull Request;
-9. Após a aprovação, mova a atividade para **Done**.
+## Organização do código
 
-### Criar uma branch
-
-```bash
-git switch main
-git pull origin main
-git switch -c feature/nome-da-funcionalidade
+```text
+src/app/page.tsx                  Interface da Iteração 2
+src/app/api/academia/route.ts     Adaptador HTTP e validação do corpo JSON
+src/lib/academia.ts              Regras, transações, schema e dados iniciais
+tests/automated/                 Testes executáveis com bases temporárias
+tests/manual/                    Plano completo A4 e modelo de registro
+docs/a5/                        Especificação atualizada e evidências
+docs/entrega-2/                  Documentação histórica anterior
 ```
 
-### Enviar uma alteração
+`GET /api/academia` retorna catálogo, matrícula, agenda, prescrição e histórico. `POST /api/academia` aceita as operações `enroll`, `reserve`, `cancel` e `workout`. Retornos: 200 para sucesso; 400 para JSON/operação inválidos; 403 para falta de matrícula ou origem divergente; 404 para item inexistente; 409 para conflito de regra; 413 para corpo acima de 8 KB; 415 para formato diferente de JSON; 422 para campos inválidos; 500 para falha inesperada. A identidade AL01 é fixada no servidor e o adaptador não aceita trocar o aluno por parâmetro.
 
-```bash
-git add .
-git commit -m "feat: descreve a funcionalidade implementada"
-git push -u origin feature/nome-da-funcionalidade
+## Conferência do exercício de Git
+
+```sh
+git fetch origin --tags
+git show v1 --no-patch
+git show --stat 02fc160
+git log --graph --oneline --decorate origin/master origin/iteracao2
+git show v2 --no-patch
+git merge-base --is-ancestor origin/iteracao2 origin/master
 ```
 
----
+O último comando deve terminar com código 0. A branch `iteracao2` deve permanecer publicada para conferência do professor. Não recrie nem mova as tags de entrega.
 
-## Publicação
+## Solução de problemas
 
-A aplicação será publicada utilizando:
-
-| Serviço | Plano |
-| --- | --- |
-| GitHub | Gratuito |
-| Vercel | Hobby gratuito |
-| Neon PostgreSQL | Free |
-
-Não serão contratados serviços pagos da AWS, IBM Cloud ou Google Cloud.
-
-A aplicação está publicada em [academia-conectada.vercel.app](https://academia-conectada.vercel.app).
-
----
-
-## Próximos passos
-
-1. Criar o modelo inicial do Prisma;
-2. Conectar a aplicação ao PostgreSQL no Neon;
-3. Implementar autenticação com Better Auth;
-4. Persistir matrículas, reservas, treinos e registros de evolução;
-5. Criar testes automatizados para os fluxos principais;
-6. Evoluir os perfis com permissões reais por papel;
-7. Refinar a administração de planos, modalidades e aulas.
-
----
-
-### Universidade Presbiteriana Mackenzie
-
-**Curso:** Análise e Desenvolvimento de Sistemas  
-**Projeto:** Academia Conectada  
-**Finalidade:** Projeto acadêmico
+- **`node:sqlite` não encontrado:** confira `node --version` e selecione Node 24.13+ da série 24.
+- **`npm ci` falha:** execute na pasta que contém `package.json` e `package-lock.json`, com acesso à internet para baixar as dependências.
+- **Falha ao abrir banco:** confira permissão de escrita no diretório de `ACADEMIA_DB_PATH` e reinicie.
+- **`database is locked`:** encerre outras instâncias que estejam usando o mesmo arquivo e tente novamente.
+- **Dados antigos:** recarregar preserva os dados por projeto; siga o procedimento de cópia de segurança da pasta para reiniciar a demonstração.
+- **API indisponível:** confira o terminal e use Atualizar dados na interface; não registre aprovação sem confirmar o estado persistido.
