@@ -1,6 +1,6 @@
 {
   "name": "academia-conectada",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev --webpack --hostname 127.0.0.1",
@@ -8,13 +8,16 @@
     "start": "next start --hostname 127.0.0.1",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test tests/automated/*.test.ts"
+    "test": "node --experimental-strip-types --test tests/automated/*.test.ts",
+    "test:a6": "node --experimental-strip-types tests/a6/execute-plan.ts",
+    "test:browser": "node tests/a6/browser.mjs"
   },
   "dependencies": {
     "@tailwindcss/postcss": "latest",
+    "@vercel/blob": "2.9.0",
     "date-fns": "latest",
     "lucide-react": "latest",
-    "next": "latest",
+    "next": "16.4.6",
     "react": "latest",
     "react-dom": "latest",
     "recharts": "latest"
@@ -24,12 +27,18 @@
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "eslint": "latest",
-    "eslint-config-next": "latest",
+    "eslint-config-next": "16.4.6",
+    "playwright": "1.65.1",
     "tailwindcss": "latest",
     "typescript": "latest"
   },
   "engines": {
     "node": ">=24.13.0 <25"
   },
-  "type": "module"
+  "type": "module",
+  "overrides": {
+    "zod": "4.6.6",
+    "sharp": "0.35.5",
+    "source-map-js": "1.2.2"
+  }
 }

@@ -1,19 +1,13 @@
-import { resolve } from "node:path";
-import { Academy, DomainError } from "../../../lib/academia";
+import { DomainError } from "../../../lib/academia";
+import { DEMO_COOKIE, demoIdentity, demoOperation } from "../../../lib/demo-store";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const globalDb = globalThis as typeof globalThis & { academy?: Academy; academyConstructor?: typeof Academy };
-function database() {
-  // Reabre a conexão após hot reload para não manter instâncias de classes antigas.
-  if (globalDb.academy && globalDb.academyConstructor !== Academy) {
-    globalDb.academy.close();
-    globalDb.academy = undefined;
-  }
-  globalDb.academy ??= new Academy(resolve(process.env.ACADEMIA_DB_PATH || "data/academia.sqlite"));
-  globalDb.academyConstructor = Academy;
-  return globalDb.academy;
+function success(data: unknown, request: Request, identity: ReturnType<typeof demoIdentity>) {
+  const response = reply(data);
+  if (identity.isNew) response.headers.set("Set-Cookie", `${DEMO_COOKIE}=${identity.id}; HttpOnly; SameSite=Strict; Path=/; Max-Age=2592000${new URL(request.url).protocol === "https:" ? "; Secure" : ""}`);
+  return response;
 }
 function reply(data: unknown, status = 200) {
   return Response.json(data, { status, headers: { "Cache-Control": "no-store" } });
@@ -23,12 +17,15 @@ function failure(error: unknown) {
   console.error("Falha no serviço da academia", error);
   return reply({ error: "Não foi possível concluir a operação. Atualize os dados antes de tentar novamente." }, 500);
 }
-export async function GET() {
-  try { return reply(database().state()); } catch (error) { return failure(error); }
+export async function GET(request: Request) {
+  try {
+    const identity = demoIdentity(request);
+    return success(await demoOperation(identity.id), request, identity);
+  } catch (error) { return failure(error); }
 }
 export async function POST(request: Request) {
   try {
-    // Instância acadêmica compartilhada, sem contas reais. Não é autenticação.
+    // Demonstração isolada pelo cookie aleatório; não é autenticação de usuário.
     const origin = request.headers.get("origin");
     // Next pode normalizar request.url para localhost no desenvolvimento.
     // Host representa o endereço efetivamente usado pelo navegador.
@@ -51,15 +48,8 @@ export async function POST(request: Request) {
     try { input = JSON.parse(Buffer.concat(chunks).toString("utf8")); }
     catch { return reply({ error: "JSON inválido." }, 400); }
     if (!input || typeof input !== "object" || Array.isArray(input)) return reply({ error: "Objeto JSON obrigatório." }, 400);
-    const db = database();
-    let result;
-    switch (input.action) {
-      case "enroll": result = db.enroll(input); break;
-      case "reserve": result = db.reserve(input.classId); break;
-      case "cancel": result = db.cancel(input.classId); break;
-      case "workout": result = db.saveWorkout(input); break;
-      default: return reply({ error: "Operação desconhecida." }, 400);
-    }
-    return reply({ ...result, state: db.state() });
+    if (!["enroll", "reserve", "cancel", "workout", "new-demo"].includes(String(input.action))) return reply({ error: "Operação desconhecida." }, 400);
+    const identity = demoIdentity(request, input.action === "new-demo");
+    return success(await demoOperation(identity.id, input), request, identity);
   } catch (error) { return failure(error); }
 }

@@ -80,15 +80,18 @@ export default function Home() {
       </header>
       <div className="mx-auto max-w-6xl space-y-6 px-4 py-6 sm:px-6">
         <section className={panel}>
-          <p className="text-sm font-bold text-[var(--brand)]">ITERAÇÃO 2</p>
+          <p className="text-sm font-bold text-[var(--brand)]">ENTREGA FINAL A6</p>
           <h2 className="mt-2 text-3xl font-bold">Organize sua rotina na academia</h2>
           <p className="mt-3 max-w-3xl leading-7">Escolha um plano, reserve sua próxima aula e acompanhe os treinos registrados.</p>
-          <p className="mt-4 rounded-md bg-[#fff2c8] p-3 text-sm leading-6 text-[#624510]">Ambiente acadêmico compartilhado com o aluno de demonstração AL01. Use somente dados fictícios. A matrícula não gera cobrança; esta versão não possui login.</p>
+          <p className="mt-4 rounded-md bg-[#fff2c8] p-3 text-sm leading-6 text-[#624510]">Ambiente acadêmico com dados fictícios e sem cobrança. Cada navegador possui uma demonstração separada, com o aluno AL01. Não há cadastro de conta ou login. Os dados permanecem ao atualizar a página; use Nova demonstração para começar outro teste.</p>
           <div className="mt-5 flex flex-wrap items-center gap-4">
             <span className="rounded-md bg-[var(--mint)] px-3 py-2 font-semibold text-[#205734]">{state?.enrollment ? `Plano ${state.enrollment.planName} ativo` : "Matrícula não realizada"}</span>
             <span>{state?.classes.filter(item => item.reserved).length ?? 0} reserva(s)</span>
             <span>{state?.history.length ?? 0} treino(s) registrado(s)</span>
             <button className="focus-ring ml-auto flex min-h-11 items-center gap-2 rounded-md border border-[var(--line)] px-3 font-semibold disabled:opacity-50" type="button" disabled={busy} onClick={() => void refresh()}><RefreshCw size={16} aria-hidden="true" />Atualizar dados</button>
+            <button className="focus-ring min-h-11 rounded-md border border-[var(--line)] px-3 font-semibold disabled:opacity-50" type="button" disabled={busy} onClick={async () => {
+              if (await send({ action: "new-demo" })) { setTerms(false); setSelected({}); setLoads({}); setNotes(""); requestId.current = ""; }
+            }}>Nova demonstração</button>
           </div>
         </section>
         <div aria-live="polite" aria-atomic="true">{message && <p className="rounded-md border border-[#b9dfc6] bg-[var(--mint)] p-4 font-semibold text-[#205734]">{message}</p>}</div>
@@ -96,6 +99,7 @@ export default function Home() {
         {!state ? <p role="status">{error ? "Use Atualizar dados para tentar novamente." : "Carregando dados da academia…"}</p> : <>
           <section id="matricula" className={panel}>
             <h2 className="text-2xl font-bold">Planos e matrícula</h2>
+            {state.plans.length === 0 && <p className="mt-4" role="status">Nenhum plano disponível no momento.</p>}
             <div className="mt-5 grid gap-4 md:grid-cols-3">
               {state.plans.map(plan => <article key={plan.id} className={`rounded-md border p-4 ${planId === plan.id ? "border-[var(--brand)] bg-[#fff8f8]" : "border-[var(--line)]"}`}>
                 <h3 className="text-xl font-bold">{plan.name}</h3><p className="mt-2 text-2xl font-bold">{currency(plan.price)}<span className="text-sm font-normal"> / mês</span></p>
@@ -156,7 +160,7 @@ export default function Home() {
             </ol>}
           </section>
         </>}
-        <footer className="pb-5 text-center text-sm text-[var(--muted)]">Academia Conectada · Projeto acadêmico Mackenzie · Versão 2.0</footer>
+        <footer className="pb-5 text-center text-sm text-[var(--muted)]">Academia Conectada · Projeto acadêmico Mackenzie · Entrega A6</footer>
       </div>
     </main>
   );
