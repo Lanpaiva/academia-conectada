@@ -68,7 +68,7 @@ try {
   await page.getByLabel('Observações', { exact: true }).fill('Resposta interrompida A6');
   await page.getByRole('button', { name: 'Salvar treino', exact: true }).click();
   await interruption;
-  await page.getByRole('alert').waitFor();
+  await page.locator('p[role="alert"]').waitFor();
   await page.unrouteAll({ behavior: 'wait' });
   await page.getByRole('button', { name: 'Salvar treino', exact: true }).click();
   await page.getByText('Registro já salvo. Histórico preservado.', { exact: true }).waitFor();
@@ -103,6 +103,13 @@ try {
   const rejected = await post({ action: 'workout', requestId: 'bad-a6', notes: '', exercises: [{ id: 'leg', load: -1 }] });
   assert.equal(rejected.status(), 422); assert.equal((await state()).history.length, 2);
   note('A6-B12', 'CT06-03 parcial', 'Validação direta na API', 'Carga −1 enviada por HTTP recusada com 422; histórico inalterado.');
+  assert.equal((await post({ action: 'new-demo' })).status(), 200);
+  assert.equal((await post({ action: 'enroll', planId: 'basic', name: 'Concorrência A6', email: 'concorrencia@example.test', terms: true })).status(), 200);
+  const concurrent = await Promise.all([post({ action: 'reserve', classId: 'alongamento' }), post({ action: 'reserve', classId: 'alongamento' })]);
+  assert.deepEqual(concurrent.map(r => r.status()).sort(), [200, 409]);
+  const last = (await state()).classes.find(c => c.id === 'alongamento');
+  assert.equal(last.occupied, 10); assert.equal(last.reserved, 1);
+  note('A6-B13', 'Concorrência complementar', 'Requisições HTTP concorrentes', 'Dois envios da mesma demonstração à última vaga: um 200 e um 409; uma reserva e ocupação 10/10. Não equivale a dois alunos autenticados.');
   assert.deepEqual(errors, []);
   console.log(`${results.length} verificações de navegador aprovadas em ${base}`);
 } catch (error) {

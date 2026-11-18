@@ -1,0 +1,168 @@
+{
+  "executedAt": "2026-11-18T07:31:51.453Z",
+  "node": "v24.22.3",
+  "scope": "Recorte operacionalizado da v2; IDs A6-S não são aprovação integral dos cenários originais A4.",
+  "fixtures": "SQLite isolado; relógio 18/11/2026 12h São Paulo; AL01 fixo, sem login; basic=PL01; aulas e exercícios mapeados por função.",
+  "results": [
+    {
+      "id": "A6-S01",
+      "source": "CT02-01",
+      "title": "Catálogo público do recorte",
+      "status": "Aprovado",
+      "observed": "Três planos; Essencial R$ 99,00; quatro aulas futuras. Não verifica perfil autenticado.",
+      "durationMs": 3.92
+    },
+    {
+      "id": "A6-S02",
+      "source": "CT03-01, CT03-02",
+      "title": "Matrícula e protocolo persistido",
+      "status": "Aprovado",
+      "observed": "AL01 vinculado ao Essencial; consulta e reenvio preservam protocolo e uma única matrícula; sem pagamento.",
+      "durationMs": 1.05
+    },
+    {
+      "id": "A6-S03",
+      "source": "CT03-03",
+      "title": "Dados obrigatórios",
+      "status": "Aprovado",
+      "observed": "Nome vazio, e-mail vazio e inválido recusados; nenhuma matrícula.",
+      "durationMs": 0.55
+    },
+    {
+      "id": "A6-S04",
+      "source": "CT03-04",
+      "title": "Aceite dos termos",
+      "status": "Aprovado",
+      "observed": "Sem aceite retorna 422 e não grava protocolo.",
+      "durationMs": 0.24
+    },
+    {
+      "id": "A6-S05",
+      "source": "CT03-05",
+      "title": "Plano indisponível",
+      "status": "Aprovado",
+      "observed": "Plano desativado recusado também na camada de serviço.",
+      "durationMs": 0.23
+    },
+    {
+      "id": "A6-S06",
+      "source": "CT03-06",
+      "title": "Matrícula incompatível",
+      "status": "Aprovado",
+      "observed": "Outro plano retorna 409; matrícula original intacta.",
+      "durationMs": 1.09
+    },
+    {
+      "id": "A6-S07",
+      "source": "CT04-01",
+      "title": "Reserva da última vaga",
+      "status": "Aprovado",
+      "observed": "Ocupação passou de 9 para 10; reserva persistida. Ocupação inicial é massa sintética.",
+      "durationMs": 0.51
+    },
+    {
+      "id": "A6-S08",
+      "source": "CT04-02",
+      "title": "Reserva sem matrícula",
+      "status": "Aprovado",
+      "observed": "Sem matrícula retorna 403; vaga preservada. Não simula login de AL03.",
+      "durationMs": 0.26
+    },
+    {
+      "id": "A6-S09",
+      "source": "CT04-03",
+      "title": "Lotação",
+      "status": "Aprovado",
+      "observed": "Pilates lotada retorna 409 e mantém ocupação 12/12.",
+      "durationMs": 0.33
+    },
+    {
+      "id": "A6-S10",
+      "source": "CT04-04",
+      "title": "Duplicidade",
+      "status": "Aprovado",
+      "observed": "Duplicação recusada; uma reserva, ocupação 9/10.",
+      "durationMs": 0.34
+    },
+    {
+      "id": "A6-S11",
+      "source": "CT04-05",
+      "title": "Conflito de horário",
+      "status": "Aprovado",
+      "observed": "Sobreposição Bike/Funcional recusada; apenas Bike reservada.",
+      "durationMs": 0.31
+    },
+    {
+      "id": "A6-S12",
+      "source": "CT04-06",
+      "title": "Cancelamento idempotente",
+      "status": "Aprovado",
+      "observed": "Duas solicitações de cancelamento liberam somente uma vaga; ocupação 9/10.",
+      "durationMs": 0.32
+    },
+    {
+      "id": "A6-S13",
+      "source": "CT04-07, CT04-08",
+      "title": "Fronteiras do prazo",
+      "status": "Aprovado",
+      "observed": "T=2h inclusivo; T+1ms e T aceitos; T−1ms recusado, sem liberar a vaga.",
+      "durationMs": 0.64
+    },
+    {
+      "id": "A6-S14",
+      "source": "CT04-10",
+      "title": "Falha e recuperação",
+      "status": "Aprovado",
+      "observed": "Erro injetado aborta transação; após recuperação, apenas uma reserva é gravada.",
+      "durationMs": 0.44
+    },
+    {
+      "id": "A6-S15",
+      "source": "CT05-01",
+      "title": "Consulta da prescrição demonstrativa",
+      "status": "Aprovado",
+      "observed": "Sessão A fixa com três exercícios e orientações. Não cobre duas sessões ou atribuição individual da A4.",
+      "durationMs": 0.23
+    },
+    {
+      "id": "A6-S16",
+      "source": "CT06-01",
+      "title": "Registro e histórico",
+      "status": "Aprovado",
+      "observed": "Histórico contém cargas 20/15 kg e observação; prescrição original permanece em 80 kg para Leg press.",
+      "durationMs": 15.3
+    },
+    {
+      "id": "A6-S17",
+      "source": "CT06-02",
+      "title": "Carga não numérica e correção",
+      "status": "Aprovado",
+      "observed": "Texto rejeitado sem registro parcial; após correção, somente um treino completo.",
+      "durationMs": 0.45
+    },
+    {
+      "id": "A6-S18",
+      "source": "CT06-03",
+      "title": "Limites da carga",
+      "status": "Aprovado",
+      "observed": "0 e 500 kg aceitos; −0,01 e 500,01 recusados. Repetições não são editáveis nesta versão.",
+      "durationMs": 0.36
+    },
+    {
+      "id": "A6-S19",
+      "source": "CT06-05",
+      "title": "Reenvio após resposta perdida",
+      "status": "Aprovado",
+      "observed": "Repetir a mesma chave de envio preserva um único registro; interrupção real da rede é verificada separadamente no navegador.",
+      "durationMs": 0.27
+    },
+    {
+      "id": "A6-S20",
+      "source": "CT03-02, CT04-01, CT06-01",
+      "title": "Persistência após reabrir arquivo",
+      "status": "Aprovado",
+      "observed": "Nova conexão ao arquivo recupera matrícula, protocolo, reserva e treino sem duplicação.",
+      "durationMs": 4.73
+    }
+  ]
+}

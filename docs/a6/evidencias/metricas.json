@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-18",
+  "originalA4": {
+    "planned": 67,
+    "approved": 0,
+    "failed": 0,
+    "blocked": 67,
+    "notReviewed": 0,
+    "integralExecutionPercent": 0.0,
+    "blockedPercent": 100.0,
+    "approvalAmongExecuted": null
+  },
+  "operationalA6": {
+    "planned": 33,
+    "executed": 33,
+    "approved": 33,
+    "failed": 0,
+    "blocked": 0,
+    "executionPercent": 100.0,
+    "approvalPercent": 100.0,
+    "failurePercent": 0.0
+  },
+  "regression": {
+    "executed": 28,
+    "approved": 28,
+    "failed": 0
+  },
+  "publicHttp": {
+    "executed": 7,
+    "approved": 7,
+    "failed": 0
+  },
+  "originalUseCases": {
+    "planned": 8,
+    "withPartialImplementation": 5,
+    "fullyValidated": 0
+  },
+  "note": "Ensaios sobrepostos não são somados como casos A4 únicos. Bloqueado significa impossibilidade de execução integral; evidências parciais são preservadas em A6-S/A6-B."
+}

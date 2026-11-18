@@ -1,0 +1,8 @@
+APROVADO: origem local aceita → 400
+APROVADO: origem externa recusada → 403
+APROVADO: formato incorreto → 415
+APROVADO: JSON inválido → 400
+APROVADO: array recusado → 400
+APROVADO: corpo acima de 8 KB → 413
+APROVADO: campos inválidos → 422
+7 verificações HTTP aprovadas.

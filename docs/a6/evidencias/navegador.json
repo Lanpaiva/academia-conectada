@@ -1,0 +1,99 @@
+{
+  "executedAt": "2026-11-18T07:51:07.718Z",
+  "base": "https://academia-conectada.vercel.app",
+  "browser": "157.0.8103.79",
+  "errors": [],
+  "results": [
+    {
+      "id": "A6-B01",
+      "source": "UC02",
+      "title": "Consulta do catálogo",
+      "status": "Aprovado",
+      "observed": "Três planos e quatro aulas exibidos, sem login."
+    },
+    {
+      "id": "A6-B02",
+      "source": "CT03-04",
+      "title": "Termos obrigatórios no navegador",
+      "status": "Aprovado",
+      "observed": "Formulário sem aceite não criou matrícula."
+    },
+    {
+      "id": "A6-B03",
+      "source": "UC03",
+      "title": "Matrícula e recarga",
+      "status": "Aprovado",
+      "observed": "Plano Essencial e mesmo protocolo recuperados do servidor."
+    },
+    {
+      "id": "A6-B04",
+      "source": "UC04",
+      "title": "Reserva conflito e lotação",
+      "status": "Aprovado",
+      "observed": "Bike confirmada; Funcional recusada por conflito; Pilates indica lotação."
+    },
+    {
+      "id": "A6-B05",
+      "source": "CT06-04",
+      "title": "Abandono sem salvar",
+      "status": "Aprovado",
+      "observed": "Preenchimento seguido de recarga não adicionou histórico."
+    },
+    {
+      "id": "A6-B06",
+      "source": "UC05, UC06",
+      "title": "Prescrição registro e histórico",
+      "status": "Aprovado",
+      "observed": "Leg press consultado; carga realizada 35 kg persistida após recarga, sem alterar 80 kg prescritos."
+    },
+    {
+      "id": "A6-B07",
+      "source": "CT06-05",
+      "title": "Resposta perdida e reenvio",
+      "status": "Aprovado",
+      "observed": "Cliente exibiu erro; reenvio reconheceu registro já salvo; total 2, sem duplicar a tentativa."
+    },
+    {
+      "id": "A6-B08",
+      "source": "Complementar A6",
+      "title": "Isolamento entre navegadores",
+      "status": "Aprovado",
+      "observed": "Segundo contexto inicia sem matrícula nem dados do primeiro. É isolamento da demonstração, não login."
+    },
+    {
+      "id": "A6-B09",
+      "source": "CT04-06",
+      "title": "Cancelamento pela interface",
+      "status": "Aprovado",
+      "observed": "Vaga liberada; Bike voltou à ocupação 14/18."
+    },
+    {
+      "id": "A6-B10",
+      "source": "TNF02 parcial",
+      "title": "Responsividade das áreas implementadas",
+      "status": "Aprovado",
+      "observed": "Sem rolagem horizontal em 360, 768, 1280 e 1920 px. Não cobre áreas ausentes."
+    },
+    {
+      "id": "A6-B11",
+      "source": "CT02-05",
+      "title": "Catálogo vazio falha e recuperação",
+      "status": "Aprovado",
+      "observed": "Respostas controladas: vazio tem mensagem própria; 503 é comunicado; consulta real restaura catálogo."
+    },
+    {
+      "id": "A6-B12",
+      "source": "CT06-03 parcial",
+      "title": "Validação direta na API",
+      "status": "Aprovado",
+      "observed": "Carga −1 enviada por HTTP recusada com 422; histórico inalterado."
+    },
+    {
+      "id": "A6-B13",
+      "source": "Concorrência complementar",
+      "title": "Requisições HTTP concorrentes",
+      "status": "Aprovado",
+      "observed": "Dois envios da mesma demonstração à última vaga: um 200 e um 409; uma reserva e ocupação 10/10. Não equivale a dois alunos autenticados."
+    }
+  ]
+}

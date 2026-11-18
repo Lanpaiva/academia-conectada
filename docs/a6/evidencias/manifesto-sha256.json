@@ -1,0 +1,18 @@
+{
+  "auditoria-producao.json": "e027d2182b79478b2180676e763e997b164679ce039f77a6313221829422e3e0",
+  "aulas.png": "60586a4db84a17e787e37e8761da4d60ad40ac734f13a916a993ad41b5b40d8c",
+  "http-local.txt": "dae3a88266fc23367ae54444ff1c856d6a7cf099adb515fb5db0a7fe77fa1af2",
+  "http-publico.txt": "dae3a88266fc23367ae54444ff1c856d6a7cf099adb515fb5db0a7fe77fa1af2",
+  "lint.txt": "5855d559c7682f8596d0fb8898577bc140784a518cd6ecd8b675c1ebbf721d38",
+  "matricula.png": "bfbecdbc358d4a75c90c721d22d6c21ea4af90f8ca2fe084c6139fbd6ec839db",
+  "metricas.json": "f91982ecf77ccff0139b36faa74cfddff59fb275abd980838d87928f09be10c1",
+  "mobile.png": "7e959c341de7f8387c5be9d9689f91d7a0511ea4f8a6692040bc12c86e44701f",
+  "navegador.json": "a63bf4cfb377cf53672fd908b2728dffe6d8146fd5a4a44797715bb349cfbba3",
+  "publicacao.json": "cfeb5243ed2ddad68d045b0ccb9667283116bb72fafaf488f466c784b7ff7f74",
+  "regressao-v2.tap": "6931684a184344668f1cbfc9574a7cde4f334511d44bd59130d1ba71e9d1e0a8",
+  "resultados-a4.json": "06f9056ef23e016b8c428f09931ebc25bbff0aa3e7df03d42bd889cf283c43e8",
+  "servico.json": "8c8fadc56e6abe89dc3aabd7b511bec3d2e9f42077e6ac483c74be193bde7251",
+  "treino.png": "bc6aa856f87cef5bde5765ff27984a61fc48e2021c5dc16bb418f9818dcd1e20",
+  "typecheck.txt": "c586d85335853c157641b611cc18ddaa0fc3a410762187d16b37d53033176c64",
+  "../../../tests/manual/cenarios-de-teste.json": "452bfe616693d58bd404c89683af6fb7eabb5c05b8560c2af611ce840fa28308"
+}

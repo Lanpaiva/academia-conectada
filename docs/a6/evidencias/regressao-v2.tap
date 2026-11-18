@@ -1,0 +1,178 @@
+TAP version 13
+# Subtest: catálogo inicial tem planos, horários futuros e aula lotada
+ok 1 - catálogo inicial tem planos, horários futuros e aula lotada
+  ---
+  duration_ms: 1.487625
+  type: 'test'
+  ...
+# Subtest: matrícula persiste protocolo e impede incompatibilidade
+ok 2 - matrícula persiste protocolo e impede incompatibilidade
+  ---
+  duration_ms: 0.888375
+  type: 'test'
+  ...
+# Subtest: matrícula rejeita sem aceite sem criar registro
+ok 3 - matrícula rejeita sem aceite sem criar registro
+  ---
+  duration_ms: 0.315542
+  type: 'test'
+  ...
+# Subtest: matrícula rejeita sem nome sem criar registro
+ok 4 - matrícula rejeita sem nome sem criar registro
+  ---
+  duration_ms: 0.570083
+  type: 'test'
+  ...
+# Subtest: matrícula rejeita e-mail inválido sem criar registro
+ok 5 - matrícula rejeita e-mail inválido sem criar registro
+  ---
+  duration_ms: 0.4815
+  type: 'test'
+  ...
+# Subtest: matrícula rejeita plano inexistente sem criar registro
+ok 6 - matrícula rejeita plano inexistente sem criar registro
+  ---
+  duration_ms: 0.312834
+  type: 'test'
+  ...
+# Subtest: plano desativado não aceita matrícula
+ok 7 - plano desativado não aceita matrícula
+  ---
+  duration_ms: 0.235958
+  type: 'test'
+  ...
+# Subtest: reserva e treino exigem matrícula
+ok 8 - reserva e treino exigem matrícula
+  ---
+  duration_ms: 0.3975
+  type: 'test'
+  ...
+# Subtest: reserva disponível grava uma vaga e rejeita duplicação
+ok 9 - reserva disponível grava uma vaga e rejeita duplicação
+  ---
+  duration_ms: 0.486584
+  type: 'test'
+  ...
+# Subtest: lotação e conflito não alteram reservas
+ok 10 - lotação e conflito não alteram reservas
+  ---
+  duration_ms: 0.588792
+  type: 'test'
+  ...
+# Subtest: aulas consecutivas sem sobreposição são permitidas
+ok 11 - aulas consecutivas sem sobreposição são permitidas
+  ---
+  duration_ms: 0.495917
+  type: 'test'
+  ...
+# Subtest: aula inexistente e aula iniciada são rejeitadas
+ok 12 - aula inexistente e aula iniciada são rejeitadas
+  ---
+  duration_ms: 0.285416
+  type: 'test'
+  ...
+# Subtest: cancelamento no limite de 2h com diferença 1ms
+ok 13 - cancelamento no limite de 2h com diferença 1ms
+  ---
+  duration_ms: 0.492833
+  type: 'test'
+  ...
+# Subtest: cancelamento no limite de 2h com diferença 0ms
+ok 14 - cancelamento no limite de 2h com diferença 0ms
+  ---
+  duration_ms: 0.366208
+  type: 'test'
+  ...
+# Subtest: cancelamento no limite de 2h com diferença -1ms
+ok 15 - cancelamento no limite de 2h com diferença -1ms
+  ---
+  duration_ms: 0.432458
+  type: 'test'
+  ...
+# Subtest: cancelamento não remove reserva de outro aluno
+ok 16 - cancelamento não remove reserva de outro aluno
+  ---
+  duration_ms: 0.364125
+  type: 'test'
+  ...
+# Subtest: gravação do treino mantém carga realizada e não altera prescrição
+ok 17 - gravação do treino mantém carga realizada e não altera prescrição
+  ---
+  duration_ms: 0.496458
+  type: 'test'
+  ...
+# Subtest: carga inválida -1 não produz histórico
+ok 18 - carga inválida -1 não produz histórico
+  ---
+  duration_ms: 0.315209
+  type: 'test'
+  ...
+# Subtest: carga inválida 501 não produz histórico
+ok 19 - carga inválida 501 não produz histórico
+  ---
+  duration_ms: 0.261167
+  type: 'test'
+  ...
+# Subtest: carga inválida NaN não produz histórico
+ok 20 - carga inválida NaN não produz histórico
+  ---
+  duration_ms: 0.236167
+  type: 'test'
+  ...
+# Subtest: carga inválida Infinity não produz histórico
+ok 21 - carga inválida Infinity não produz histórico
+  ---
+  duration_ms: 0.225333
+  type: 'test'
+  ...
+# Subtest: carga inválida 20 não produz histórico
+ok 22 - carga inválida 20 não produz histórico
+  ---
+  duration_ms: 0.208916
+  type: 'test'
+  ...
+# Subtest: carga no limite 0 é aceita
+ok 23 - carga no limite 0 é aceita
+  ---
+  duration_ms: 0.245125
+  type: 'test'
+  ...
+# Subtest: carga no limite 500 é aceita
+ok 24 - carga no limite 500 é aceita
+  ---
+  duration_ms: 0.227333
+  type: 'test'
+  ...
+# Subtest: exercícios ausentes, desconhecidos e repetidos são rejeitados
+ok 25 - exercícios ausentes, desconhecidos e repetidos são rejeitados
+  ---
+  duration_ms: 0.320292
+  type: 'test'
+  ...
+# Subtest: falha na persistência desfaz transação e permite recuperação
+ok 26 - falha na persistência desfaz transação e permite recuperação
+  ---
+  duration_ms: 0.911834
+  type: 'test'
+  ...
+# Subtest: reabrir o arquivo mantém matrícula, agenda, reserva e treino
+ok 27 - reabrir o arquivo mantém matrícula, agenda, reserva e treino
+  ---
+  duration_ms: 4.878916
+  type: 'test'
+  ...
+# Subtest: dois processos concorrentes disputam a última vaga sem exceder capacidade
+ok 28 - dois processos concorrentes disputam a última vaga sem exceder capacidade
+  ---
+  duration_ms: 58.569375
+  type: 'test'
+  ...
+1..28
+# tests 28
+# suites 0
+# pass 28
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 194.181959
